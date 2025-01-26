@@ -12,9 +12,9 @@ export default function Feeds({feeds}: FeedsProps) {
       <table>
         <thead>
           <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Feed Code</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Feed Code</th>
           </tr>
         </thead>
         <tbody>
