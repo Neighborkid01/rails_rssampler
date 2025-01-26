@@ -5,6 +5,6 @@ const webpackConfig = generateWebpackConfig();
 
 module.exports = merge(
   webpackConfig, {
-    plugins: [ new ForkTsCheckerWebpackPlugin() ],
+    plugins: [new ForkTsCheckerWebpackPlugin()],
   }
 );
