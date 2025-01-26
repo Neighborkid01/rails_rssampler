@@ -43,7 +43,6 @@ export default [
       "import/no-unused-modules": "error",
       "import/no-cycle": "error",
       "import/no-duplicates": "error",
-      "import/no-extraneous-dependencies": "error",
       "import/extensions": ["error", "never", { "types": "always", "container": "always", "functions": "always" }],
 
       "react/no-array-index-key": "error",

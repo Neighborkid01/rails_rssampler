@@ -21,7 +21,7 @@ export default function FeedShow({feed}: FeedProps) {
           </tr>
           <tr>
             <th>Feed Code</th>
-            <td>{feed.feedCode}</td>
+            <td>{feed.feed_code}</td>
           </tr>
         </tbody>
       </table>

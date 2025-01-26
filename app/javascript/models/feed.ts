@@ -1,7 +1,7 @@
 type Feed = {
   id: number;
   name: string;
-  feedCode: string;
+  feed_code: string;
 };
 
 export { Feed };

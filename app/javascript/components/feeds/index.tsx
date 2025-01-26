@@ -22,7 +22,7 @@ export default function Feeds({feeds}: FeedsProps) {
             <tr key={feed.id}>
               <td>{feed.id}</td>
               <td>{feed.name}</td>
-              <td>{feed.feedCode}</td>
+              <td>{feed.feed_code}</td>
             </tr>
           ))}
         </tbody>
