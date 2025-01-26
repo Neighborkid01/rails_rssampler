@@ -1,0 +1,2 @@
+class FeedFiltersController < ApplicationController
+end

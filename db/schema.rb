@@ -10,15 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_26_035655) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_26_070954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "feeds", force: :cascade do |t|
-    t.string "name"
-    t.string "feed_code"
+  create_table "feed_filters", force: :cascade do |t|
+    t.string "url", null: false
+    t.integer "pronoun", null: false
+    t.jsonb "conditions", null: false
+    t.jsonb "substitutions", null: false
+    t.bigint "feed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["feed_id"], name: "index_feed_filters_on_feed_id"
   end
 
+  create_table "feeds", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "feed_code", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feed_code"], name: "index_feeds_on_feed_code"
+  end
+
+  add_foreign_key "feed_filters", "feeds"
 end

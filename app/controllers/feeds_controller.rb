@@ -4,7 +4,7 @@ class FeedsController < ApplicationController
   end
 
   def show
-    @feed = Feed.find(params[:id])
+    @feed = Feed.find(params[:id]).as_json(include: :feed_filters)
   end
 
   def new

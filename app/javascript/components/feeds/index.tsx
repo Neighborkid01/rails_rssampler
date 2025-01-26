@@ -5,7 +5,7 @@ interface FeedsProps {
   feeds: Feed[];
 }
 
-export default function Feeds({feeds}: FeedsProps) {
+export default function Feeds({ feeds }: FeedsProps) {
   return (
     <div>
       <h1>Feeds</h1>
@@ -20,7 +20,6 @@ export default function Feeds({feeds}: FeedsProps) {
         <tbody>
           {feeds.map(feed => (
             <tr key={feed.id}>
-              <td>{feed.id}</td>
               <td>{feed.name}</td>
               <td>{feed.feed_code}</td>
             </tr>

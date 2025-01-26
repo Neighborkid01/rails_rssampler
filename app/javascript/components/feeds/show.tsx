@@ -5,7 +5,7 @@ interface FeedProps {
   feed: Feed;
 }
 
-export default function FeedShow({feed}: FeedProps) {
+export default function FeedShow({ feed }: FeedProps) {
   return (
     <div>
       <h1>Feed</h1>
@@ -23,6 +23,12 @@ export default function FeedShow({feed}: FeedProps) {
             <th>Feed Code</th>
             <td>{feed.feed_code}</td>
           </tr>
+          {feed.feed_filters.map(filter => {
+            return <tr key={filter.id}>
+              <th>Filter</th>
+              <td>{JSON.stringify(filter)}</td>
+            </tr>;
+          })}
         </tbody>
       </table>
     </div>
