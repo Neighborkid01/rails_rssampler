@@ -61,6 +61,9 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem "pry", "~> 0.15.0"
+  gem "byebug", "~> 11.1", ">= 11.1.3"
 end
 
 group :test do
@@ -76,3 +79,7 @@ gem "react-rails", "= 3.2"
 gem "rubocop", require: false
 
 gem "rubocop-rails-omakase", require: false, group: [:development]
+
+gem "tailwindcss-ruby", "~> 4.0"
+
+gem "tailwindcss-rails", "~> 3.3"

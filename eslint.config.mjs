@@ -62,6 +62,7 @@ export default [
         "MemberExpression": 1,
       }], // TODO: maybe more config from here: https://eslint.style/rules/default/indent
       "@stylistic/array-bracket-spacing": ["error", "never"],
+      "@stylistic/object-curly-spacing": ["error", "always"],
       "@stylistic/arrow-spacing": ["error", { "before": true, "after": true }],
       "@stylistic/block-spacing": ["error", "always"],
       "@stylistic/brace-style": ["error", "1tbs", { "allowSingleLine": true }],
@@ -71,6 +72,7 @@ export default [
         "imports": "always-multiline",
         "exports": "always-multiline",
         "functions": "never",
+        "enums": "always-multiline",
         "importAttributes": "always-multiline",
         "dynamicImports": "always-multiline",
       }],
