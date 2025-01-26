@@ -1,0 +1,48 @@
+# Omakase Ruby styling for Rails
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+# Your own specialized rules go here
+
+AllCops:
+  Exclude:
+    - "lib/templates/**/*"
+
+Style/RedundantReturn:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+
+Layout/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
+
+Style/ParenthesesAroundCondition:
+  AllowInMultilineConditions: true
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Lint/Debugger:
+  DebuggerMethods: {"Kernel": ["binding.irb", "Kernel.binding.irb"], "Byebug": ["byebug", "remote_byebug", "Kernel.byebug", "Kernel.remote_byebug"], "Capybara": ["page.save_and_open_page", "page.save_and_open_screenshot", "page.save_page", "page.save_screenshot", "save_and_open_page", "save_and_open_screenshot", "save_page", "save_screenshot"], "debug.rb": ["binding.b", "binding.break", "Kernel.binding.b", "Kernel.binding.break"], "Pry": ["binding.pry", "binding.remote_pry", "binding.pry_remote", "Kernel.binding.pry", "Kernel.binding.remote_pry", "Kernel.binding.pry_remote", "Pry.rescue", "pry"], "Rails": ["debugger", "Kernel.debugger"], "RubyJard": ["jard"], "WebConsole": ["binding.console"]}
+
+Lint/UnusedBlockArgument:
+  Enabled: true
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: false
+
+Lint/UselessAssignment:
+  Enabled: true
+
+Lint/AssignmentInCondition:
+  Enabled: true
