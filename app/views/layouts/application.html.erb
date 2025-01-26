@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RailsRssampler</title>
+    <title>RSSampler</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -14,7 +14,14 @@
 
 
   <body class="min-h-screen bg-slate-900 text-slate-100" >
-    <main class="container mx-auto mt-28 px-5 flex">
+    <%= react_component("shared/nav", {
+      routes: [
+        { path: "/", title: "Home" },
+        { path: "/feeds", title: "Feeds" },
+        { path: "/login", title: "Log In" }
+      ]
+    }) %>
+    <main class="mx-8 my-4">
       <%= yield %>
     </main>
   </body>

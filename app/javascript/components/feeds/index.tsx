@@ -1,31 +1,23 @@
 import React from "react";
+import FeedCard from "./feed_card";
+import CreateFeedCard from "./create_feed_card";
+import Header from "../shared/header";
 import { Feed } from "../../models/feed";
 
 interface FeedsProps {
   feeds: Feed[];
 }
 
-export default function Feeds({ feeds }: FeedsProps) {
+const Feeds = ({ feeds }: FeedsProps) => {
   return (
-    <div>
-      <h1>Feeds</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Feed Code</th>
-          </tr>
-        </thead>
-        <tbody>
-          {feeds.map(feed => (
-            <tr key={feed.id}>
-              <td>{feed.name}</td>
-              <td>{feed.feed_code}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <Header>Feeds</Header>
+      <ul className="flex flex-row flex-wrap">
+        <CreateFeedCard />
+        {feeds.map(feed => <FeedCard feed={feed} />)}
+      </ul>
+    </>
   );
-}
+};
+
+export default Feeds;
