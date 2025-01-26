@@ -64,6 +64,8 @@ group :development do
 
   gem "pry", "~> 0.15.0"
   gem "byebug", "~> 11.1", ">= 11.1.3"
+
+  gem "hotwire-livereload", "~> 2.0"
 end
 
 group :test do
