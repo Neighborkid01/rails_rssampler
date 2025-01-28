@@ -7,7 +7,7 @@ interface FeedCardProps {
 
 const FeedCard = ({ feed }: FeedCardProps) => {
   return (
-    <a href={`${feed.feed_code}/view`}>
+    <a href={`feeds/${feed.feed_code}`}>
       <li className="flex flex-col m-2 rounded-md bg-slate-500 justify-between">
         <span className="p-2">{feed.name}</span>
         <div className="relative h-64 w-64">

@@ -11,7 +11,7 @@ interface NavProps {
 
 const Nav = ({ routes }: NavProps) => {
   const route_links = routes.map(route => (
-    <a className="p-4 text-xl" href={route.path}>
+    <a key={route.title} className="p-4 text-xl" href={route.path}>
       {route.title}
     </a>
   ));

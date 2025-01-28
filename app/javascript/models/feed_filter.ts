@@ -1,11 +1,15 @@
 import { FilterableField } from "./filterable_field";
 
-const enum FilterPronoun {
-  Any = 0,
-  All = 1,
+enum FilterPronoun {
+  Any = "any_",
+  All = "all_",
 }
 
-const enum FilterType {
+function filterPronounLabel(value: string): string | undefined {
+  return Object.keys(FilterPronoun).find(key => FilterPronoun[key as keyof typeof FilterPronoun] === value);
+}
+
+enum FilterType {
   StartsWith = "Starts with",
   EndsWith = "Ends with",
   Contains = "Contains",
@@ -32,4 +36,11 @@ type FeedFilter = {
   feed_id: number;
 };
 
-export { FeedFilter };
+export {
+  FilterPronoun,
+  filterPronounLabel,
+  FilterType,
+  FilterSubstitution,
+  FilterCondition,
+  FeedFilter,
+};

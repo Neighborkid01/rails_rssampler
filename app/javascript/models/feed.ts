@@ -7,4 +7,13 @@ type Feed = {
   feed_filters: FeedFilter[];
 };
 
-export { Feed };
+type EditableFeed = {
+  id?: number;
+  name: string;
+  feed_code?: string;
+};
+
+export {
+  Feed,
+  EditableFeed,
+};
