@@ -72,6 +72,7 @@ export default [
         "imports": "always-multiline",
         "exports": "always-multiline",
         "functions": "never",
+        "generics": "ignore",
         "enums": "always-multiline",
         "importAttributes": "always-multiline",
         "dynamicImports": "always-multiline",
