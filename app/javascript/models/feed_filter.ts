@@ -16,6 +16,10 @@ enum FilterType {
   Matches = "Matches",
 }
 
+function filterTypeValue(value: string): string | undefined {
+  return Object.keys(FilterType).find(key => FilterType[key as keyof typeof FilterType] === value);
+}
+
 type FilterSubstitution = {
   field: FilterableField;
   value: string;
@@ -36,11 +40,15 @@ type FeedFilter = {
   feed_id: number;
 };
 
+type FeedFilterForCreation = Omit<FeedFilter, "id" | "feed_id">;
+
 export {
   FilterPronoun,
   filterPronounLabel,
   FilterType,
+  filterTypeValue,
   FilterSubstitution,
   FilterCondition,
   FeedFilter,
+  FeedFilterForCreation,
 };

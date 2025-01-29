@@ -19,13 +19,13 @@ interface DropdownOption {
 }
 
 interface DropdownProps<T> {
-  dropdownType: DropdownType;
-  dropdownSize: DropdownSize;
+  dropdownType?: DropdownType;
+  dropdownSize?: DropdownSize;
   initialValue: T;
   valueOptions: T[];
   onValueSelected: (value: T) => void;
   toDropdownOption: (value: T) => DropdownOption;
-  offset: string;
+  offset?: string;
 }
 
 const Dropdown = <T,>({

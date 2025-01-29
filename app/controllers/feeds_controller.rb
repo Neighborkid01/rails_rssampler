@@ -9,7 +9,7 @@ class FeedsController < ApplicationController
 
   def new
     @feed = Feed.new
-    @pronoun = FeedFilter.pronouns.keys.first
+    @filter = FeedFilter.new
   end
 
   def create
@@ -26,6 +26,7 @@ class FeedsController < ApplicationController
 
   def edit
     @feed = Feed.find_by(feed_code: params[:feed_code])
+    @filter = @feed.feed_filter
   end
 
   def update

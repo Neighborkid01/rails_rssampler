@@ -1,4 +1,4 @@
-const enum FilterableField {
+enum FilterableField {
   Author = "Author",
   Description = "Description",
   Duration = "Duration",
@@ -17,4 +17,11 @@ const enum FilterableField {
   Url = "URL",
 }
 
-export { FilterableField };
+function filterableFieldValue(value: string): string | undefined {
+  return Object.keys(FilterableField).find(key => FilterableField[key as keyof typeof FilterableField] === value);
+}
+
+export {
+  FilterableField,
+  filterableFieldValue,
+};

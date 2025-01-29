@@ -1,24 +1,21 @@
 import React from "react";
 import FeedForm from "./form";
 import Header from "../shared/header";
-import { Feed } from "../../models/feed";
-import { FilterPronoun } from "../../models/feed_filter";
+import { FeedForCreation } from "../../models/feed";
+import { FeedFilterForCreation } from "../../models/feed_filter";
 
 interface NewFeedProps {
-  feed: Feed;
-  pronoun: FilterPronoun;
+  feed: FeedForCreation;
+  filter: FeedFilterForCreation;
 }
 
-const NewFeed = ({ feed, pronoun }: NewFeedProps) => {
+const NewFeed = ({ feed, filter }: NewFeedProps) => {
   return (
     <>
       <Header>New Feed</Header>
       <FeedForm
         feed={feed}
-        url=""
-        pronoun={pronoun}
-        conditions={[]}
-        substitutions={[]}
+        filter={filter}
       />
       <a href="/feeds">Back to Feeds</a>
     </>
