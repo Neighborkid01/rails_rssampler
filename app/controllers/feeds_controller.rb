@@ -4,12 +4,13 @@ class FeedsController < ApplicationController
   end
 
   def show
-    @feed = Feed.find_by(feed_code: params[:feed_code]).as_json(include: :feed_filters)
+    @feed = Feed.find_by(feed_code: params[:feed_code])
+    @filters = @feed.feed_filters
   end
 
   def new
     @feed = Feed.new
-    @filter = FeedFilter.new
+    @filters = [FeedFilter.new]
   end
 
   def create
@@ -17,7 +18,9 @@ class FeedsController < ApplicationController
     @feed.feed_code = SecureRandom.urlsafe_base64(7)
     ActiveRecord::Base.transaction do
       @feed.save!
-      FeedFilter.create!(feed_filter_params.merge(feed_id: @feed.id))
+      conditions = JSON.parse(feed_filter_params[:conditions])
+      substitutions = JSON.parse(feed_filter_params[:substitutions])
+      FeedFilter.create!(feed_filter_params.merge(feed_id: @feed.id, conditions: conditions, substitutions: substitutions))
     end
     redirect_to feeds_path
   rescue ActiveRecord::RecordInvalid, ActiveRecord::NotNullViolation
@@ -26,7 +29,7 @@ class FeedsController < ApplicationController
 
   def edit
     @feed = Feed.find_by(feed_code: params[:feed_code])
-    @filter = @feed.feed_filter
+    @filters = @feed.feed_filters
   end
 
   def update

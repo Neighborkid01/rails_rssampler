@@ -5,8 +5,10 @@ enum FilterPronoun {
   All = "all_",
 }
 
-function filterPronounLabel(value: string): string | undefined {
-  return Object.keys(FilterPronoun).find(key => FilterPronoun[key as keyof typeof FilterPronoun] === value);
+function filterPronounLabel(value: FilterPronoun): string {
+  const res = Object.keys(FilterPronoun).find(key => FilterPronoun[key as keyof typeof FilterPronoun] === value);
+  if (res === undefined) { throw new Error(`This code should never run, how did you get here with ${value}?`); }
+  return res;
 }
 
 enum FilterType {
@@ -16,8 +18,10 @@ enum FilterType {
   Matches = "Matches",
 }
 
-function filterTypeValue(value: string): string | undefined {
-  return Object.keys(FilterType).find(key => FilterType[key as keyof typeof FilterType] === value);
+function filterTypeValue(value: FilterType): string {
+  const res = Object.keys(FilterType).find(key => FilterType[key as keyof typeof FilterType] === value);
+  if (res === undefined) { throw new Error(`This code should never run, how did you get here with ${value}?`); }
+  return res;
 }
 
 type FilterSubstitution = {

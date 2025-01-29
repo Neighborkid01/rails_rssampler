@@ -2,7 +2,7 @@ import React from "react";
 import { FilterSubstitution } from "../../models/feed_filter";
 import { useFeedContext } from "../feeds/form";
 import { FilterableField } from "../../models/filterable_field";
-import EditFilterSubstitution from "./edit_filter_substitution";
+import EditFilterSubstitution from "./edit";
 
 interface EditFilterSubstitutionListProps {
   substitutions:  [number, FilterSubstitution][];

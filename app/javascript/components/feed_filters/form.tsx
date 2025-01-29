@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FilterCondition, FilterPronoun, filterPronounLabel, FilterSubstitution } from "../../models/feed_filter";
 import Dropdown, { DropdownSize, DropdownType } from "../shared/dropdown";
-import EditFilterConditionList from "./edit_filter_condition_list";
-import EditFilterSubstitutionList from "./edit_filter_substitution_list";
+import EditFilterConditionList from "../filter_conditions/edit_list";
+import EditFilterSubstitutionList from "../filter_substitutions/edit_list";
 
 interface FeedFiltersFormProps {
   pronoun: FilterPronoun;
@@ -30,7 +30,7 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
             onValueSelected={onPronounChanged}
             dropdownType={DropdownType.Rounded}
             dropdownSize={DropdownSize.Small}
-            toDropdownOption={value => ({ value, label: filterPronounLabel(value)! })}
+            toDropdownOption={value => ({ value, label: filterPronounLabel(value) })}
             offset="left-40"
           />
           of the following are true

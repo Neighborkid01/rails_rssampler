@@ -19,7 +19,7 @@ const EditFilterSubstitution = ({ substitution, onFieldChanged, onValueChanged, 
         initialValue={substitution.field}
         valueOptions={fieldOptions}
         onValueSelected={onFieldChanged}
-        toDropdownOption={label => ({ value: filterableFieldValue(label)!, label: label })}
+        toDropdownOption={label => ({ value: filterableFieldValue(label), label: label })}
       />
 
       <div className="relative w-full">

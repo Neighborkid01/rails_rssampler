@@ -2,7 +2,7 @@ import React from "react";
 import { FilterCondition, FilterType } from "../../models/feed_filter";
 import { useFeedContext } from "../feeds/form";
 import { FilterableField } from "../../models/filterable_field";
-import EditFilterCondition from "./edit_filter_condition";
+import EditFilterCondition from "./edit";
 
 interface EditFilterConditionListProps {
   conditions:  [number, FilterCondition][];

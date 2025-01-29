@@ -17,8 +17,10 @@ enum FilterableField {
   Url = "URL",
 }
 
-function filterableFieldValue(value: string): string | undefined {
-  return Object.keys(FilterableField).find(key => FilterableField[key as keyof typeof FilterableField] === value);
+function filterableFieldValue(value: FilterableField): string {
+  const res =  Object.keys(FilterableField).find(key => FilterableField[key as keyof typeof FilterableField] === value);
+  if (res === undefined) { throw new Error(`This code should never run, how did you get here with ${value}?`); }
+  return res;
 }
 
 export {

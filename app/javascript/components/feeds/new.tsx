@@ -6,16 +6,16 @@ import { FeedFilterForCreation } from "../../models/feed_filter";
 
 interface NewFeedProps {
   feed: FeedForCreation;
-  filter: FeedFilterForCreation;
+  filters: FeedFilterForCreation[];
 }
 
-const NewFeed = ({ feed, filter }: NewFeedProps) => {
+const NewFeed = ({ feed, filters }: NewFeedProps) => {
   return (
     <>
       <Header>New Feed</Header>
       <FeedForm
         feed={feed}
-        filter={filter}
+        filters={filters}
       />
       <a href="/feeds">Back to Feeds</a>
     </>

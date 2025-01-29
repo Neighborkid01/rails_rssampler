@@ -24,11 +24,13 @@ const useFeedContext =  () => {
 
 interface FeedFormProps {
   feed: FeedForCreation;
-  filter: FeedFilterForCreation;
+  filters: FeedFilterForCreation[];
 }
 
-const FeedForm = ({ feed, filter }: FeedFormProps) => {
+const FeedForm = ({ feed, filters }: FeedFormProps) => {
   const action = feed.id ? `/feeds/${feed.id}` : "/feeds";
+
+  const filter = filters[0]; // This is super jank and needs to be changed
 
   const [name, setName] = useState(feed.name);
   const [url, setUrl] = useState(filter.url);
