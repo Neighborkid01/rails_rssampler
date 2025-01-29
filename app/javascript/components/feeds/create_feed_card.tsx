@@ -7,7 +7,7 @@ const CreateFeedCard = () => {
         <span className="p-2">Add a new feed</span>
         <div className="relative h-64 w-64 p-10">
           <img
-            src="images/plus.png"
+            src="/images/plus.png"
             alt=""
             className="flex justify-center"
           />

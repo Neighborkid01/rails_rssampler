@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { EditableFeed } from "../../models/feed";
 import { FilterCondition, FilterPronoun, FilterSubstitution } from "../../models/feed_filter";
 import FeedFiltersForm from "../feed_filters/form";
+import Form from "../shared/form";
 
 interface FeedFormProps {
   feed: EditableFeed;
@@ -22,7 +23,7 @@ const FeedForm = ({ feed, url, pronoun, conditions, substitutions }: FeedFormPro
   };
 
   return (
-    <form action={action} onSubmit={onSubmit} method="post">
+    <Form action={action} onSubmit={onSubmit}>
       <div className="grid gap-6 mt-6 mb-2 md:grid-cols-2">
         {feed.id && <input type="hidden" name="feed[id]" value={feed.id}/>}
         {feed.feed_code && <input type="hidden" name="feed[feed_code]" value={feed.feed_code}/>}
@@ -53,7 +54,7 @@ const FeedForm = ({ feed, url, pronoun, conditions, substitutions }: FeedFormPro
         // errors={errors}
       />
       <button type="submit">Submit</button>
-    </form>
+    </Form>
   );
 };
 

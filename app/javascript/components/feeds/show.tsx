@@ -5,7 +5,7 @@ interface FeedProps {
   feed: Feed;
 }
 
-export default function FeedShow({ feed }: FeedProps) {
+const FeedShow = ({ feed }: FeedProps) => {
   return (
     <div>
       <h1>Feed</h1>
@@ -33,4 +33,6 @@ export default function FeedShow({ feed }: FeedProps) {
       </table>
     </div>
   );
-}
+};
+
+export default FeedShow;

@@ -14,7 +14,7 @@ const Feeds = ({ feeds }: FeedsProps) => {
       <Header>Feeds</Header>
       <ul className="flex flex-row flex-wrap">
         <CreateFeedCard />
-        {feeds.map(feed => <FeedCard feed={feed} />)}
+        {feeds.map(feed => <FeedCard key={feed.id} feed={feed} />)}
       </ul>
     </>
   );
