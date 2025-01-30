@@ -9,9 +9,11 @@ interface FormProps {
 }
 
 const Form = ({ action, onSubmit, method = "POST", children }: FormProps) => {
+  const actualMethod = method == "DELETE" ? "POST" : method;
   return (
-    <form action={action} onSubmit={onSubmit} method={method}>
+    <form action={action} onSubmit={onSubmit} method={actualMethod}>
       <CsrfToken />
+      {method == "DELETE" && <input type="hidden" name="_method" value="DELETE"/>}
       {children}
     </form>
   );

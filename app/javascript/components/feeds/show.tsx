@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Feed } from "../../models/feed";
 import { FeedFilter } from "../../models/feed_filter";
 import FeedFilterShow from "../feed_filters/show";
+import Form from "../shared/form";
 
 interface FeedProps {
   feed: Feed;
@@ -50,10 +51,9 @@ const FeedShow = ({ feed, filters }: FeedProps) => {
 
       <br />
       <a href={`/feeds/${feed.feed_code}/edit`}>Edit Feed</a>
-      <form action={`feeds/${feed.feed_code}`} method="DELETE">
-        <input type="hidden" name="id" value={feed.id}/>
+      <Form action={`/feeds/${feed.feed_code}`} method="DELETE">
         <input type="submit" value="Delete Feed" onClick={() => confirm(`Are you sure you want to permenantly delete "${feed.name}?"`)}/>
-      </form>
+      </Form>
 
       <a href="/feeds">Back to Feeds</a>
     </>

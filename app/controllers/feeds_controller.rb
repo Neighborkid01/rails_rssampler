@@ -22,7 +22,6 @@ class FeedsController < ApplicationController
 
   def create
     @feed = Feed.new(feed_params)
-    @feed.feed_code = SecureRandom.urlsafe_base64(7)
     ActiveRecord::Base.transaction do
       @feed.save!
       conditions = JSON.parse(feed_filter_params[:conditions])
