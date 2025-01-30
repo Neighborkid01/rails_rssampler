@@ -9,12 +9,12 @@ interface FeedProps {
 }
 
 const FeedShow = ({ feed, filters }: FeedProps) => {
-  const [feedLink, setFeedLink] = useState(`https://someurl.com/feeds/${feed.feed_code}`);
+  const [feedLink, setFeedLink] = useState(`https://someurl.com/feeds/${feed.feed_code}.xml`);
   const [copyText, setCopyText] = useState("Copy");
 
   useEffect(() => {
     const currentUrl = window.location.origin;
-    setFeedLink(`${currentUrl}/feeds/${feed.feed_code}`);
+    setFeedLink(`${currentUrl}/feeds/${feed.feed_code}.xml`);
   }, []);
 
   const copyToClipboard = () => {

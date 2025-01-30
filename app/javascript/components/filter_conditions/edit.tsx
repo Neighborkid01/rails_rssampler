@@ -21,7 +21,7 @@ const EditFilterCondition = ({ condition, onTypeChanged, onFieldChanged, onValue
         initialValue={condition.field}
         valueOptions={fieldOptions}
         onValueSelected={onFieldChanged}
-        toDropdownOption={label => ({ value: filterableFieldValue(label)!, label: label })}
+        toDropdownOption={label => ({ value: filterableFieldValue(label), label: label })}
       />
 
       <Dropdown
@@ -29,7 +29,7 @@ const EditFilterCondition = ({ condition, onTypeChanged, onFieldChanged, onValue
         valueOptions={typeOptions}
         onValueSelected={onTypeChanged}
         dropdownType={DropdownType.NotRounded}
-        toDropdownOption={label => ({ value: filterTypeValue(label)!, label: label })}
+        toDropdownOption={label => ({ value: filterTypeValue(label), label: label })}
         offset="left-40"
       />
 

@@ -20,7 +20,7 @@ const FeedFilterShow = ({ filter }: FeedFilterProps) => {
     <ul>
       {substitutions}
     </ul>
-    <div>{`Keep entries where ${filterPronounLabel(filter.pronoun)!.toUpperCase()} of the following are true`}</div>
+    <div>{`Keep entries where ${filterPronounLabel(filter.pronoun).toUpperCase()} of the following are true`}</div>
     <ul>
       {conditions}
     </ul>

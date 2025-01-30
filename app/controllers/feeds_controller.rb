@@ -6,6 +6,13 @@ class FeedsController < ApplicationController
   def show
     @feed = Feed.find_by(feed_code: params[:feed_code])
     @filters = @feed.feed_filters
+    respond_to do |format|
+      format.html
+      format.xml {
+        parser_service = FeedFilterParsingService.new(@feed)
+        render xml: parser_service.parse
+      }
+    end
   end
 
   def new
