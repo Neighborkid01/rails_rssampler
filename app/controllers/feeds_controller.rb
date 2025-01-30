@@ -40,11 +40,15 @@ class FeedsController < ApplicationController
 
   def update
     @feed = Feed.find_by(feed_code: params[:feed_code])
-    if @feed.update(feed_params)
-      redirect_to feeds_path
-    else
-      render "edit"
+    ActiveRecord::Base.transaction do
+      @feed.update! feed_params
+      conditions = JSON.parse(feed_filter_params[:conditions])
+      substitutions = JSON.parse(feed_filter_params[:substitutions])
+      FeedFilter.update(feed_filter_params.merge(conditions: conditions, substitutions: substitutions))
     end
+    redirect_to feed_path(@feed.feed_code)
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::NotNullViolation
+    render "edit"
   end
 
   def destroy
