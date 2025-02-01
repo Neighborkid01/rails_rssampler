@@ -3,10 +3,10 @@ import { FilterCondition, FilterType } from "../../models/feed_filter";
 import { useFeedContext } from "../feeds/form";
 import { FilterableField } from "../../models/filterable_field";
 import EditFilterCondition from "./edit";
+import FormError from "../shared/form_fields/form_error";
 
 interface EditFilterConditionListProps {
   conditions:  [number, FilterCondition][];
-  // errors: x;
 }
 
 const defaultCondition: FilterCondition = {
@@ -62,8 +62,7 @@ const EditFilterConditionList = ({ conditions }: EditFilterConditionListProps) =
         })}
       </ul>
       <div>
-        {/* <FormError errors field=FeedFormField::Condition />
-        <FormError errors field=FeedFormField::Conditions /> */}
+        <FormError field="feed_filter[conditions]" label="Conditions" />
       </div>
       <button onClick={addCondition} className="text-sm ml-4">
         + Add Condition

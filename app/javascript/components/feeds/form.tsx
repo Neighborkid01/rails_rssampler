@@ -4,6 +4,7 @@ import { FeedFilterForCreation, FilterCondition, FilterSubstitution } from "../.
 import FeedFiltersForm from "../feed_filters/form";
 import Form from "../shared/form";
 import Header from "../shared/header";
+import FormError from "../shared/form_fields/form_error";
 
 interface FeedContextParams {
   setConditions: React.Dispatch<React.SetStateAction<[number, FilterCondition][]>>;
@@ -54,6 +55,7 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
         <div className="grid gap-6 mt-6 mb-2 md:grid-cols-2">
           {feed.id && <input type="hidden" name="feed[id]" value={feed.id}/>}
           {feed.feed_code && <input type="hidden" name="feed[feed_code]" value={feed.feed_code}/>}
+          {filter.id && <input type="hidden" name="feed_filter[id]" value={filter.id}/>}
 
           <label className="block text-md font-medium text-slate-100">
             Name
@@ -61,7 +63,7 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
               className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-800 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
               value={name} onChange={e => setName(e.target.value)}
             />
-            {/* <FormError errors field=FeedFormField::Name /> */}
+            <FormError field="feed[name]" label="Name"/>
           </label>
 
           <label className="block text-md font-medium text-slate-100">
@@ -70,7 +72,7 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
               className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-800 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
               value={url} onChange={e => setUrl(e.target.value)}
             />
-            {/* <FormError errors field=FeedFormField::Url /> */}
+            <FormError field="feed_filter[url]" label="URL"/>
           </label>
         </div>
 
@@ -87,7 +89,6 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
             pronoun={pronoun}
             conditions={conditions}
             substitutions={substitutions}
-            // errors={errors}
           />
         </FeedContext.Provider>
         <button type="submit">Submit</button>

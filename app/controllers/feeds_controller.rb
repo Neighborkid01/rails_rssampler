@@ -23,14 +23,23 @@ class FeedsController < ApplicationController
   def create
     @feed = Feed.new(feed_params)
     ActiveRecord::Base.transaction do
-      @feed.save!
+      raise ActiveRecord::Rollback unless @feed.save
       conditions = JSON.parse(feed_filter_params[:conditions])
       substitutions = JSON.parse(feed_filter_params[:substitutions])
-      FeedFilter.create!(feed_filter_params.merge(feed_id: @feed.id, conditions: conditions, substitutions: substitutions))
+      filter = FeedFilter.new(feed_filter_params.merge(feed_id: @feed.id, conditions: conditions, substitutions: substitutions))
+      @filters = [filter]
+      raise ActiveRecord::Rollback unless filter.save
     end
-    redirect_to feeds_path
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::NotNullViolation
-    render "new"
+    respond_to do |format|
+      if @feed.errors.blank? && @filters.all? { |f| f.errors.blank? }
+        format.html { redirect_to feeds_path }
+        format.json { render json: { feed: @feed.as_json(include: :filters) }, status: :created }
+      else
+        format.html { render "new", status: :unprocessable_entity }
+        # Only works for 1 filter for now
+        format.json { render json: { error: { feed: @feed.errors, feed_filter: @filters&.first&.errors || {} } }, status: :unprocessable_entity }
+      end
+    end
   end
 
   def edit
@@ -39,16 +48,25 @@ class FeedsController < ApplicationController
   end
 
   def update
-    @feed = Feed.find_by(feed_code: params[:feed_code])
+    @feed = Feed.find_by feed_code: params[:feed_code]
     ActiveRecord::Base.transaction do
-      @feed.update! feed_params
-      conditions = JSON.parse(feed_filter_params[:conditions])
-      substitutions = JSON.parse(feed_filter_params[:substitutions])
-      FeedFilter.update(feed_filter_params.merge(conditions: conditions, substitutions: substitutions))
+      raise ActiveRecord::Rollback unless @feed.update feed_params
+      conditions = JSON.parse feed_filter_params[:conditions]
+      substitutions = JSON.parse feed_filter_params[:substitutions]
+      filter = FeedFilter.find feed_filter_params[:id]
+      @filters = [filter]
+      raise ActiveRecord::Rollback unless filter.update feed_filter_params.merge(feed_id: @feed.id, conditions: conditions, substitutions: substitutions)
     end
-    redirect_to feed_path(@feed.feed_code)
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::NotNullViolation
-    render "edit"
+    respond_to do |format|
+      if @feed.errors.blank? && @filters.all? { |f| f.errors.blank? }
+        format.html { redirect_to edit_feed_path(@feed) }
+        format.json { render json: { feed: @feed.as_json(include: :filters) }, status: :ok }
+      else
+        format.html { render "new", status: :unprocessable_entity }
+        # Only works for 1 filter for now
+        format.json { render json: { error: { feed: @feed.errors, feed_filter: @filters&.first&.errors || {} } }, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
@@ -63,6 +81,6 @@ class FeedsController < ApplicationController
     end
 
     def feed_filter_params
-      params.require(:feed_filter).permit(:url, :pronoun, :conditions, :substitutions)
+      params.require(:feed_filter).permit(:id, :url, :pronoun, :conditions, :substitutions)
     end
 end

@@ -44,7 +44,14 @@ type FeedFilter = {
   feed_id: number;
 };
 
-type FeedFilterForCreation = Omit<FeedFilter, "id" | "feed_id">;
+type FeedFilterForCreation = {
+  id?: number;
+  url: string;
+  pronoun: FilterPronoun,
+  conditions: FilterCondition[],
+  substitutions: FilterSubstitution[],
+  feed_id?: number;
+};
 
 export {
   FilterPronoun,

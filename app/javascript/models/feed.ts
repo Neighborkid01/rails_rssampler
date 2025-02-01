@@ -1,10 +1,10 @@
-import { FeedFilter } from "./feed_filter";
+// import { FeedFilter } from "./feed_filter";
 
 type Feed = {
   id: number;
   name: string;
   feed_code: string;
-  feed_filters: FeedFilter[];
+  // feed_filters: FeedFilter[];
 };
 
 type FeedForCreation = {

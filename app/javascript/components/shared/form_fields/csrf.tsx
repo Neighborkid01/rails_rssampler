@@ -1,5 +1,5 @@
 import React from "react";
-import { useRailsContext } from "../utils";
+import { useRailsContext } from "../rails_component";
 
 const CsrfToken = () => {
   const railsContext = useRailsContext();

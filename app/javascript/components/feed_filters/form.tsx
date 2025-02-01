@@ -34,26 +34,20 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
             offset="left-40"
           />
           of the following are true
-          <div className="mb-2">
-            <EditFilterConditionList
-              conditions={conditions}
-              // errors={errors}
-            />
-          </div>
+        </div>
+        <div className="mb-2">
+          <EditFilterConditionList conditions={conditions}/>
         </div>
       </fieldset>
 
       <fieldset className="block text-md font-medium text-slate-100">
         <legend>Substitutions:</legend>
         <div className="mb-2">
-          <EditFilterSubstitutionList
-            substitutions={substitutions}
-            // errors={errors}
-          />
+          <EditFilterSubstitutionList substitutions={substitutions}/>
         </div>
       </fieldset>
 
-      <input type="hidden" name="feed_filter[pronoun]" value={selectedPronoun} />
+      <input type="hidden" name="feed_filter[pronoun]" value={selectedPronoun}/>
       <input type="hidden" name="feed_filter[substitutions]" value={stringifySubstitutions()}/>
       <input type="hidden" name="feed_filter[conditions]" value={stringifyConditions()}/>
     </>

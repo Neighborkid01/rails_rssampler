@@ -1,5 +1,4 @@
-import React from "react";
-import { RailsContext } from "./rails_context";
+import React, { createContext } from "react";
 
 interface RailsComponentProps {
   component: string;
@@ -18,3 +17,19 @@ const RailsComponent = ({ component, props, context }: RailsComponentProps) => {
 };
 
 export default RailsComponent;
+
+interface RailsContextParams {
+  csrf_token: string;
+}
+
+const RailsContext = createContext<RailsContextParams | null>(null);
+
+const useRailsContext = () => {
+  const context = React.useContext(RailsContext);
+  if (!context) {
+    throw new Error("useRailsContext must be used within a RailsContext.Provider");
+  }
+  return context;
+};
+
+export { useRailsContext };

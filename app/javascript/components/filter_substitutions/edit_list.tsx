@@ -3,6 +3,7 @@ import { FilterSubstitution } from "../../models/feed_filter";
 import { useFeedContext } from "../feeds/form";
 import { FilterableField } from "../../models/filterable_field";
 import EditFilterSubstitution from "./edit";
+import FormError from "../shared/form_fields/form_error";
 
 interface EditFilterSubstitutionListProps {
   substitutions:  [number, FilterSubstitution][];
@@ -58,8 +59,7 @@ const EditFilterSubstitutionList = ({ substitutions }: EditFilterSubstitutionLis
         })}
       </ul>
       <div>
-        {/* <FormError errors field=FeedFormField::Substitution />
-        <FormError errors field=FeedFormField::Substitutions /> */}
+        <FormError field="feed_filter[substitutions]" label="Substitutions" />
       </div>
       <button onClick={addSubstitution} className="text-sm ml-4">
         + Add Substitution
