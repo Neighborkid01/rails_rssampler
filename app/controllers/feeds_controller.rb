@@ -71,8 +71,16 @@ class FeedsController < ApplicationController
 
   def destroy
     @feed = Feed.find_by(feed_code: params[:feed_code])
-    @feed.destroy!
-    redirect_to feeds_path
+    feed_name = @feed.name
+    respond_to do |format|
+      if  @feed.destroy!
+        format.html { redirect_to feeds_path, notice: "Feed '#{feed_name}' was successfully deleted." }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to feeds_path, alert: "Failed to delete feed '#{feed_name}'.", status: :unprocessable_entity }
+        format.json { render json: { error: "Failed to delete feed '#{feed_name}'." }, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

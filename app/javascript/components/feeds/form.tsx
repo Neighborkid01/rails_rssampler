@@ -33,6 +33,7 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
   const title = feed.id ? "Edit Feed" : "New Feed";
   const action = feed.id ? `/feeds/${feed.feed_code}` : "/feeds";
   const method = feed.id ? "PUT" : "POST";
+  const redirectTo = action;
 
   const filter = filters[0]; // This is super jank and needs to be changed
 
@@ -51,7 +52,7 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
   return (
     <>
       <Header>{title}</Header>
-      <Form action={action} method={method}>
+      <Form action={action} method={method} redirectTo={redirectTo}>
         <div className="grid gap-6 mt-6 mb-2 md:grid-cols-2">
           {feed.id && <input type="hidden" name="feed[id]" value={feed.id}/>}
           {feed.feed_code && <input type="hidden" name="feed[feed_code]" value={feed.feed_code}/>}

@@ -5,24 +5,18 @@ import { FormError } from "../../models/form_error";
 
 interface FormProps {
   action: string;
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
   method?: "GET" | "POST" | "PUT" | "DELETE";
-  useAjax?: boolean;
+  redirectTo?: string;
   children: React.ReactNode;
 }
 
-const Form = ({ action, onSubmit, method = "POST", useAjax = true, children }: FormProps) => {
+const Form = ({ action, method = "POST", redirectTo, children }: FormProps) => {
   const railsContext = useRailsContext();
   const actualMethod = method == "GET" ? "GET" : "POST";
 
   const [errors, setErrors] = React.useState<FormError | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    if (!useAjax) {
-      if (onSubmit) { onSubmit(event); }
-      return;
-    }
-
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -53,16 +47,16 @@ const Form = ({ action, onSubmit, method = "POST", useAjax = true, children }: F
         },
         body: JSON.stringify(jsonBody),
       });
-      const result = await response.json();
 
       if (!response.ok) {
+        const result = await response.json();
         console.warn(`Error submitting via ajax: ${response.status} - ${response.statusText}`, result);
         setErrors(result["error"]);
         return;
       }
 
-      if (onSubmit) {
-        onSubmit(result);
+      if (redirectTo) {
+        window.location.href = redirectTo;
       }
     } catch (error) {
       console.error("Error submitting via ajax", error);

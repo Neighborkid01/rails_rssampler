@@ -51,7 +51,7 @@ const FeedShow = ({ feed, filters }: FeedProps) => {
 
       <br />
       <a href={`/feeds/${feed.feed_code}/edit`}>Edit Feed</a>
-      <Form action={`/feeds/${feed.feed_code}`} method="DELETE">
+      <Form action={`/feeds/${feed.feed_code}`} method="DELETE" redirectTo="/feeds">
         <input type="submit" value="Delete Feed" onClick={() => confirm(`Are you sure you want to permenantly delete "${feed.name}?"`)}/>
       </Form>
 

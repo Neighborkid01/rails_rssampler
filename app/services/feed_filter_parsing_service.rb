@@ -18,7 +18,7 @@ class FeedFilterParsingService
 
     start_time = Time.now
 
-    doc.xpath("//body/rss/channel/item").each do |item|
+    doc.xpath("//rss/channel/item").each do |item|
       item.remove if should_be_removed?(item, conditions)
     end
 
@@ -44,10 +44,10 @@ class FeedFilterParsingService
       (@filter.pronoun == "all_" && unsatisfied_conditions.empty?)
     )
       Rails.logger.debug "- #{node.at_css("title").text || "No title found for item"}"
-      return true
+      return false
     end
 
-    false
+    true
   end
 
   def check_filter_conditions(conditions, node)
