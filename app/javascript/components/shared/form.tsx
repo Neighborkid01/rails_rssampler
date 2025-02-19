@@ -6,17 +6,20 @@ import { FormError } from "../../models/form_error";
 interface FormProps {
   action: string;
   method?: "GET" | "POST" | "PUT" | "DELETE";
+  useAjax?: boolean;
   redirectTo?: string;
   children: React.ReactNode;
 }
 
-const Form = ({ action, method = "POST", redirectTo, children }: FormProps) => {
+const Form = ({ action, method = "POST", useAjax = true, redirectTo, children }: FormProps) => {
   const railsContext = useRailsContext();
   const actualMethod = method == "GET" ? "GET" : "POST";
 
   const [errors, setErrors] = React.useState<FormError | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    if (!useAjax) { return; }
+
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
