@@ -5,6 +5,7 @@ import FeedFiltersForm from "../feed_filters/form";
 import Form from "../shared/form";
 import Header from "../shared/header";
 import FormError from "../shared/form_fields/form_error";
+import { useRailsContext } from "../shared/rails_component";
 
 interface FeedContextParams {
   setConditions: React.Dispatch<React.SetStateAction<[number, FilterCondition][]>>;
@@ -30,6 +31,8 @@ interface FeedFormProps {
 }
 
 const FeedForm = ({ feed, filters }: FeedFormProps) => {
+  const railsContext = useRailsContext();
+
   const title = feed.id ? "Edit Feed" : "New Feed";
   const action = feed.id ? `/feeds/${feed.feed_code}` : "/feeds";
   const method = feed.id ? "PUT" : "POST";
@@ -53,6 +56,7 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
     <>
       <Header>{title}</Header>
       <Form action={action} method={method} redirectTo={redirectTo}>
+        <input type="hidden" name="feed[user_id]" value={railsContext.current_user!.id}/>
         <div className="grid gap-6 mt-6 mb-2 md:grid-cols-2">
           {feed.id && <input type="hidden" name="feed[id]" value={feed.id}/>}
           {feed.feed_code && <input type="hidden" name="feed[feed_code]" value={feed.feed_code}/>}

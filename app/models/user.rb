@@ -4,4 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable
+
+  has_many :feeds, dependent: :destroy
+  has_many :feed_filters, through: :feeds
+
+  def admin?
+    self.is_admin
+  end
 end

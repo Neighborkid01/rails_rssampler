@@ -4,6 +4,11 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    logged_out
+    return unless user.present?
+
+    logged_in(user)
+    return unless user.admin?
     # Define abilities for the user here. For example:
     #
     #   return unless user.present?
@@ -28,5 +33,18 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
+  end
+
+  def logged_out
+  end
+
+  def logged_in(user)
+    can :manage, User, user: user
+    can :manage, Feed, user: user
+    can :manage, FeedFilter, feed: { user: user }
+  end
+
+  def admin
+    can :manage, :all
   end
 end

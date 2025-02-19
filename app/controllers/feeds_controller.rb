@@ -85,7 +85,7 @@ class FeedsController < ApplicationController
 
   private
     def feed_params
-      params.require(:feed).permit(:name, feed_filter: [:url, :pronoun, { conditions: [], substitutions: [] }])
+      params.require(:feed).permit(:user_id, :name, feed_filter: [:url, :pronoun, { conditions: [], substitutions: [] }])
     end
 
     def feed_filter_params
