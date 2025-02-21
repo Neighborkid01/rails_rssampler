@@ -9,13 +9,13 @@ const ErrorMessages = ({ errors }: ErrorMessagesProps) => {
   return (
     <>
       {errors && errors.length > 0 && (
-        <div id="error_explanation" data-turbo-cache="false">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-6 rounded relative" role="alert">
           <h2>
             {errorMessage}
           </h2>
           <ul>
             {errors.map((message: string) => (
-              <li>{message}</li>
+              <li>- {message}</li>
             ))}
           </ul>
         </div>)}

@@ -8,10 +8,11 @@ interface FormProps {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   useAjax?: boolean;
   redirectTo?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
-const Form = ({ action, method = "POST", useAjax = true, redirectTo, children }: FormProps) => {
+const Form = ({ action, method = "POST", useAjax = true, redirectTo, className = "", children }: FormProps) => {
   const railsContext = useRailsContext();
   const actualMethod = method == "GET" ? "GET" : "POST";
 
@@ -68,7 +69,7 @@ const Form = ({ action, method = "POST", useAjax = true, redirectTo, children }:
 
   return (
     <FormContext.Provider value={{ errors }}>
-      <form action={action} onSubmit={handleSubmit} method={actualMethod}>
+      <form action={action} onSubmit={handleSubmit} method={actualMethod} className={className}>
         <CsrfToken />
         {method != actualMethod && <input type="hidden" name="_method" value={method}/>}
         {children}

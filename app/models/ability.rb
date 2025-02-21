@@ -9,6 +9,8 @@ class Ability
 
     logged_in(user)
     return unless user.admin?
+
+    admin
     # Define abilities for the user here. For example:
     #
     #   return unless user.present?
