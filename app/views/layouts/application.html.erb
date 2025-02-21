@@ -13,13 +13,18 @@
 
 
   <body class="min-h-screen bg-slate-900 text-slate-100" >
-    <%= react_component("shared/nav", {
-      routes: [
-        { path: "/", title: "Home" },
-        { path: "/feeds", title: "Feeds" },
-        { path: "/users/sign_in", title: "Log In" }
-      ]
-    }) %>
+    <% routes = [
+      { path: "/feeds", title: "Feeds" },
+    ] %>
+    <% if current_user.present? %>
+      <% routes += [{ path: "/users/sign_out", title: "Log Out", method: :delete }] %>
+    <% else %>
+      <% routes += [
+        { path: "/users/sign_in", title: "Log In" },
+        { path: "/users/sign_up", title: "Sign Up" },
+      ] %>
+    <% end %>
+    <%= react_component("shared/nav", { routes: routes }) %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <main class="mx-8 my-4">

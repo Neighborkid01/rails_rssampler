@@ -1,19 +1,39 @@
 import React from "react";
+import CsrfToken from "./form_fields/csrf";
 
 type NavRoute = {
   path: string;
   title: string;
+  method?: "delete";
 };
 
 interface NavProps {
   routes: NavRoute[]
 }
 
-const Nav = ({ routes }: NavProps) => {
-  const route_links = routes.map(route => (
+const GetRoute: React.FC<{ route: NavRoute }> = ({ route }) => {
+  return (
     <a key={route.title} className="p-4 text-xl" href={route.path}>
       {route.title}
     </a>
+  );
+};
+
+const DeleteRoute: React.FC<{ route: NavRoute }> = ({ route }) => {
+  return (
+    <form key={route.title} action={route.path} method="post">
+      <CsrfToken />
+      <input type="hidden" name="_method" value="delete" />
+      <input className="p-4 text-xl" type="submit" value={route.title} />
+    </form>
+  );
+};
+
+const Nav = ({ routes }: NavProps) => {
+  const route_links = routes.map(route => (
+    route.method === "delete"
+      ? <DeleteRoute key={route.title} route={route} />
+      : <GetRoute key={route.title} route={route} />
   ));
 
   return (

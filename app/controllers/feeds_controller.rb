@@ -79,6 +79,11 @@ class FeedsController < ApplicationController
   end
 
   private
+
+    def current_ability
+      @current_ability ||= Ability.new(current_user, request)
+    end
+
     def feed_params
       params.require(:feed).permit(:user_id, :name, feed_filter: [:url, :pronoun, { conditions: [], substitutions: [] }])
     end

@@ -3,8 +3,8 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
-    logged_out
+  def initialize(user, request = nil)
+    logged_out(request)
     return unless user.present?
 
     logged_in(user)
@@ -35,7 +35,8 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
   end
 
-  def logged_out
+  def logged_out(request)
+    can :read, Feed if request&.format&.xml?
   end
 
   def logged_in(user)
