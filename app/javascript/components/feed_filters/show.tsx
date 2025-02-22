@@ -1,29 +1,47 @@
 import React from "react";
-import { FeedFilter, filterPronounLabel } from "../../models/feed_filter";
-import FilterConditionShow from "../filter_conditions/show";
-import FilterSubstitutionShow from "../filter_substitutions/show";
+import { FeedFilter, FilterCondition, filterPronounLabel, FilterSubstitution } from "../../models/feed_filter";
+import ShowField from "../shared/show_field";
+import ShowFilterConditionList from "../filter_conditions/show_list";
+import DropdownButton from "../shared/dropdown_button";
+import { DropdownSize, DropdownType } from "../shared/dropdown";
+import ShowFilterSubstitutionList from "../filter_substitutions/show_list";
 
 interface FeedFilterProps {
   filter: FeedFilter;
 };
 
 const FeedFilterShow = ({ filter }: FeedFilterProps) => {
-  // eslint-disable-next-line react/no-array-index-key
-  const substitutions = filter.substitutions.map((sub, i) => <FilterSubstitutionShow key={i} substitution={sub} />);
-  // eslint-disable-next-line react/no-array-index-key
-  const conditions = filter.conditions.map((cond, i) => <FilterConditionShow key={i} condition={cond} />);
+  const substitutions = filter.substitutions.map((sub, i): [number, FilterSubstitution] => [i, sub]);
+  const conditions = filter.conditions.map((cond, i): [number, FilterCondition] => [i, cond]);
 
   return <>
-    <div>Source URL: <code>{filter.url}</code></div>
+    <ShowField label="Source URL" value={filter.url} code={true} />
 
-    <div>Replace the following fields with new values</div>
-    <ul>
-      {substitutions}
-    </ul>
-    <div>{`Keep entries where ${filterPronounLabel(filter.pronoun).toUpperCase()} of the following are true`}</div>
-    <ul>
-      {conditions}
-    </ul>
+    <fieldset className="block text-md font-medium text-slate-100 mt-4">
+      <legend>Filter conditions:</legend>
+      <div className="text-sm">
+        Keep entries where
+        <DropdownButton
+          value={filterPronounLabel(filter.pronoun).toUpperCase()}
+          dropdownType={DropdownType.Rounded}
+          dropdownSize={DropdownSize.Small}
+          disabled
+        />
+        of the following are true
+      </div>
+      <div className="mb-2">
+        <ShowFilterConditionList conditions={conditions}/>
+      </div>
+    </fieldset>
+
+    {substitutions && substitutions.length > 0 &&
+      <fieldset className="block text-md font-medium text-slate-100">
+        <legend>Substitutions:</legend>
+        <div className="mb-2">
+          <ShowFilterSubstitutionList substitutions={substitutions}/>
+        </div>
+      </fieldset>
+    }
   </>;
 };
 

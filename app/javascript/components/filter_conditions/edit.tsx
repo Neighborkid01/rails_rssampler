@@ -30,7 +30,7 @@ const EditFilterCondition = ({ condition, onTypeChanged, onFieldChanged, onValue
         onValueSelected={onTypeChanged}
         dropdownType={DropdownType.NotRounded}
         toDropdownOption={label => ({ value: filterTypeValue(label), label: label })}
-        offset="left-40"
+        optionsClassName="left-40"
       />
 
       <div className="relative w-full">
