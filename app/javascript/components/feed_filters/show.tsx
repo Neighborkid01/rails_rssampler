@@ -22,7 +22,7 @@ const FeedFilterShow = ({ filter }: FeedFilterProps) => {
       <div className="text-sm">
         Keep entries where
         <DropdownButton
-          value={filterPronounLabel(filter.pronoun).toUpperCase()}
+          value={filterPronounLabel(filter.pronoun)}
           dropdownType={DropdownType.Rounded}
           dropdownSize={DropdownSize.Small}
           disabled
