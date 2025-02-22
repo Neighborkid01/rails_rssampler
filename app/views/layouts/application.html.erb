@@ -1,3 +1,20 @@
+<%
+  def nav_routes
+    routes = []
+    if current_user.present?
+      return [
+        { path: "/feeds", title: "Feeds" },
+        { path: "/users/sign_out", title: "Log Out", method: :delete }
+      ]
+    end
+
+    routes << { path: "/users/sign_in", title: "Log In" } unless controller_name == "sessions"
+    routes << { path: "/users/sign_up", title: "Sign Up" } unless controller_name == "registrations"
+
+    routes
+  end
+%>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,19 +30,7 @@
 
 
   <body class="min-h-screen bg-slate-900 text-slate-100" >
-    <% routes = [] %>
-    <% if current_user.present? %>
-      <% routes += [
-        { path: "/feeds", title: "Feeds" },
-        { path: "/users/sign_out", title: "Log Out", method: :delete }
-      ] %>
-    <% else %>
-      <% routes += [
-        { path: "/users/sign_in", title: "Log In" },
-        { path: "/users/sign_up", title: "Sign Up" },
-      ] %>
-    <% end %>
-    <%= react_component("shared/nav", { routes: routes }) %>
+    <%= react_component("shared/nav", { routes: nav_routes }) %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <main class="mx-8 my-4">
