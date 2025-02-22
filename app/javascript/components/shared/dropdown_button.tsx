@@ -2,6 +2,7 @@ import React from "react";
 import { DropdownSize, DropdownType } from "./dropdown";
 
 interface DropdownButtonProps {
+  buttonRef?: React.RefObject<HTMLButtonElement | null>;
   value: string;
   hidden?: boolean;
   disabled?: boolean;
@@ -12,6 +13,7 @@ interface DropdownButtonProps {
 };
 
 const DropdownButton = ({
+  buttonRef,
   value,
   hidden = true,
   disabled = true,
@@ -45,6 +47,7 @@ const DropdownButton = ({
 
   return (
     <button
+      ref={buttonRef}
       type="button"
       className={`${buttonTypeStyling} ${buttonSizeStyling} flex-shrink-0 inline-flex items-center justify-between text-sm font-medium text-center bg-slate-700 border border-slate-600 text-slate-100 hover:bg-slate-600 focus:outline-none focus:ring-slate-300 ${className}`}
       onClick={onClick}

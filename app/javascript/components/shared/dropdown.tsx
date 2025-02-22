@@ -1,6 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DropdownButton from "./dropdown_button";
-import { onClickOutside } from "./utils";
 
 enum DropdownType {
   RoundedLeft,
@@ -44,9 +43,8 @@ const Dropdown = <T,>({
   const [hidden, setHidden] = useState(true);
   const [selectedValue, setSelectedValue] = useState(toDropdownOption(initialValue));
 
-  const ref = useRef(null);
-  const clickOutsideCallback = () => { setHidden(true); };
-  onClickOutside(ref, clickOutsideCallback);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const optionsRef = useRef(null);
 
   const options = valueOptions.map(opt => {
     const option = toDropdownOption(opt);
@@ -77,9 +75,36 @@ const Dropdown = <T,>({
     }
   })();
 
+  const setOnClickOutside = () => {
+    useEffect(() => {
+      const handleClickOutside = (event: any) => {
+        // I'm on a plane, so no types for you
+        // debugger; to help me find this later
+        if (
+          optionsRef.current &&
+          !(optionsRef.current as any).contains(event.target) &&
+          buttonRef.current &&
+          !(buttonRef.current as any).contains(event.target)
+        ) {
+          setHidden(true);
+        }
+      };
+
+      !hidden
+        ? document.addEventListener("mouseup", handleClickOutside)
+        : document.removeEventListener("mouseup", handleClickOutside);
+
+      return () => {
+        document.removeEventListener("mouseup", handleClickOutside);
+      };
+    }, [hidden]);
+  };
+  setOnClickOutside();
+
   return (
     <>
       <DropdownButton
+        buttonRef={buttonRef}
         value={selectedValue.label}
         hidden={hidden}
         disabled={false}
@@ -88,7 +113,7 @@ const Dropdown = <T,>({
         className={className}
         onClick={() => setHidden((shown) => !shown)}
       />
-      <div ref={ref} className={`${optionSizeStyling} ${hidden ? "hidden" : ""} z-10 absolute divide-y divide-slate-100 rounded-lg border border-slate-600 shadow bg-slate-700 top-13 ${optionsClassName}`}>
+      <div ref={optionsRef} className={`${optionSizeStyling} ${hidden ? "hidden" : ""} z-10 absolute divide-y divide-slate-100 rounded-lg border border-slate-600 shadow bg-slate-700 top-13 ${optionsClassName}`}>
         <ul className="py-2 text-sm text-slate-100" aria-labelledby="dropdown-options">
           { options }
         </ul>
