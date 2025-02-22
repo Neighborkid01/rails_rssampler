@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Form from "../shared/form";
 import DeviseLinks from "../devise/shared/links";
+import Input from "../shared/form_fields/input";
 
 interface LoginSignUpFormProps {
   type: "login" | "signup";
@@ -18,57 +19,38 @@ const LoginSignUpForm = ({
   rememberable,
 }: LoginSignUpFormProps) => {
   const action = type === "login" ? "/users/sign_in" : "/users";
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   return (
     <>
       <Form action={action} useAjax={false} className="space-y-6">
-        <label className="block text-md font-medium text-slate-100">
-          Email
-          <input
-            type="email"
-            name="user[email]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoFocus
-            autoComplete="email"
-            className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-900 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
-          />
-          {/* <FormError errors field=LoginOrSignupFormField::Email /> */}
-        </label>
-
-        <label className="block text-md font-medium text-slate-100">
-          Password
-          <input
-            type="password"
-            name="user[password]"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="new-password"
-            className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-900 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
-          />
-          {/* <FormError errors field=LoginOrSignupFormField::Password /> */}
-        </label>
+        <Input
+          type="email"
+          field="user[email]"
+          label="Email"
+          className="bg-slate-900"
+          required
+          autoFocus
+          autoComplete="email"
+        />
+        <Input
+          type="password"
+          field="user[password]"
+          label="Password"
+          className="bg-slate-900"
+          required
+          autoComplete="new-password"
+        />
 
         {type === "signup" && (
-          <label className="block text-md font-medium text-slate-100">
-            Confirm Password
-            <input
-              type="password"
-              name="user[confirm_password]"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-              required
-              autoComplete="new-password-confirmation"
-              className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-900 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
-            />
-            {/* <FormError errors field=LoginOrSignupFormField::ConfirmPassword /> */}
-          </label>
+          <Input
+            type="password"
+            field="user[confirm_password]"
+            label="Confirm Password"
+            className="bg-slate-900"
+            required
+            autoComplete="new-password-confirmation"
+          />
         )}
 
         {type === "login" && rememberable && (

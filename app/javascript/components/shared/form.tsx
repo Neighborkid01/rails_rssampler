@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import { useRailsContext } from "./rails_component";
 import CsrfToken from "./form_fields/csrf";
 import { FormError } from "../../models/form_error";
+import HiddenInput from "./form_fields/hidden_input";
 
 interface FormProps {
   action: string;
@@ -71,7 +72,7 @@ const Form = ({ action, method = "POST", useAjax = true, redirectTo, className =
     <FormContext.Provider value={{ errors }}>
       <form action={action} onSubmit={handleSubmit} method={actualMethod} className={className}>
         <CsrfToken />
-        {method != actualMethod && <input type="hidden" name="_method" value={method}/>}
+        {method != actualMethod && <HiddenInput field="_method" value={method}/>}
         {children}
       </form>
     </FormContext.Provider>

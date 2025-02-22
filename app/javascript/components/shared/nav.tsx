@@ -1,5 +1,5 @@
 import React from "react";
-import CsrfToken from "./form_fields/csrf";
+import Form from "./form";
 
 type NavRoute = {
   path: string;
@@ -21,11 +21,9 @@ const GetRoute: React.FC<{ route: NavRoute }> = ({ route }) => {
 
 const DeleteRoute: React.FC<{ route: NavRoute }> = ({ route }) => {
   return (
-    <form key={route.title} action={route.path} method="post">
-      <CsrfToken />
-      <input type="hidden" name="_method" value="delete" />
+    <Form action={route.path} method="DELETE" useAjax={false}>
       <input className="p-4 text-xl" type="submit" value={route.title} />
-    </form>
+    </Form>
   );
 };
 

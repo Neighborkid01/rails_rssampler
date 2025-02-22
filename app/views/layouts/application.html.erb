@@ -3,7 +3,7 @@
     routes = []
     if current_user.present?
       return [
-        { path: "/feeds", title: "Feeds" },
+        { path: "/feeds", title: "My Feeds" },
         { path: "/users/sign_out", title: "Log Out", method: :delete }
       ]
     end
