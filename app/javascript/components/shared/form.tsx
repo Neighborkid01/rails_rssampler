@@ -2,21 +2,26 @@ import React, { createContext } from "react";
 import { useRailsContext } from "./rails_component";
 import CsrfToken from "./form_fields/csrf";
 import { FormError } from "../../models/form_error";
+import HiddenInput from "./form_fields/hidden_input";
 
 interface FormProps {
   action: string;
   method?: "GET" | "POST" | "PUT" | "DELETE";
+  useAjax?: boolean;
   redirectTo?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
-const Form = ({ action, method = "POST", redirectTo, children }: FormProps) => {
+const Form = ({ action, method = "POST", useAjax = true, redirectTo, className = "", children }: FormProps) => {
   const railsContext = useRailsContext();
   const actualMethod = method == "GET" ? "GET" : "POST";
 
   const [errors, setErrors] = React.useState<FormError | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    if (!useAjax) { return; }
+
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -65,9 +70,9 @@ const Form = ({ action, method = "POST", redirectTo, children }: FormProps) => {
 
   return (
     <FormContext.Provider value={{ errors }}>
-      <form action={action} onSubmit={handleSubmit} method={actualMethod}>
+      <form action={action} onSubmit={handleSubmit} method={actualMethod} className={className}>
         <CsrfToken />
-        {method != actualMethod && <input type="hidden" name="_method" value={method}/>}
+        {method != actualMethod && <HiddenInput field="_method" value={method}/>}
         {children}
       </form>
     </FormContext.Provider>

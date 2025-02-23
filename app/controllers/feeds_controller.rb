@@ -1,10 +1,10 @@
 class FeedsController < ApplicationController
+  load_and_authorize_resource find_by: :feed_code, id_param: :feed_code
+
   def index
-    @feeds = Feed.all
   end
 
   def show
-    @feed = Feed.find_by(feed_code: params[:feed_code])
     @filters = @feed.feed_filters
     respond_to do |format|
       format.html
@@ -16,12 +16,10 @@ class FeedsController < ApplicationController
   end
 
   def new
-    @feed = Feed.new
     @filters = [FeedFilter.new]
   end
 
   def create
-    @feed = Feed.new(feed_params)
     ActiveRecord::Base.transaction do
       raise ActiveRecord::Rollback unless @feed.save
       conditions = JSON.parse(feed_filter_params[:conditions])
@@ -43,12 +41,10 @@ class FeedsController < ApplicationController
   end
 
   def edit
-    @feed = Feed.find_by(feed_code: params[:feed_code])
     @filters = @feed.feed_filters
   end
 
   def update
-    @feed = Feed.find_by feed_code: params[:feed_code]
     ActiveRecord::Base.transaction do
       raise ActiveRecord::Rollback unless @feed.update feed_params
       conditions = JSON.parse feed_filter_params[:conditions]
@@ -70,7 +66,6 @@ class FeedsController < ApplicationController
   end
 
   def destroy
-    @feed = Feed.find_by(feed_code: params[:feed_code])
     feed_name = @feed.name
     respond_to do |format|
       if  @feed.destroy!
@@ -84,8 +79,13 @@ class FeedsController < ApplicationController
   end
 
   private
+
+    def current_ability
+      @current_ability ||= Ability.new(current_user, request)
+    end
+
     def feed_params
-      params.require(:feed).permit(:name, feed_filter: [:url, :pronoun, { conditions: [], substitutions: [] }])
+      params.require(:feed).permit(:user_id, :name, feed_filter: [:url, :pronoun, { conditions: [], substitutions: [] }])
     end
 
     def feed_filter_params

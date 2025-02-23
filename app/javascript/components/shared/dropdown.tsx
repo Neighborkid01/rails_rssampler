@@ -95,7 +95,7 @@ const Dropdown = <T,>({
           />
         </svg>
       </button>
-      <div className={`${optionSizeStyling} ${offset} ${hidden ? "hidden" : ""} z-10 absolute divide-y divide-slate-100 rounded-lg border border-slate-600 shadow bg-slate-700`}>
+      <div className={`${optionSizeStyling} ${offset} ${hidden ? "hidden" : ""} z-10 absolute divide-y divide-slate-100 rounded-lg border border-slate-600 shadow bg-slate-700 top-13`}>
         <ul className="py-2 text-sm text-slate-100" aria-labelledby="dropdown-options">
           { options }
         </ul>

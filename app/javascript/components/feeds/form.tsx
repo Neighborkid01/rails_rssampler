@@ -4,7 +4,9 @@ import { FeedFilterForCreation, FilterCondition, FilterSubstitution } from "../.
 import FeedFiltersForm from "../feed_filters/form";
 import Form from "../shared/form";
 import Header from "../shared/header";
-import FormError from "../shared/form_fields/form_error";
+import { useRailsContext } from "../shared/rails_component";
+import Input from "../shared/form_fields/input";
+import HiddenInput from "../shared/form_fields/hidden_input";
 
 interface FeedContextParams {
   setConditions: React.Dispatch<React.SetStateAction<[number, FilterCondition][]>>;
@@ -30,16 +32,14 @@ interface FeedFormProps {
 }
 
 const FeedForm = ({ feed, filters }: FeedFormProps) => {
+  const railsContext = useRailsContext();
+
   const title = feed.id ? "Edit Feed" : "New Feed";
   const action = feed.id ? `/feeds/${feed.feed_code}` : "/feeds";
   const method = feed.id ? "PUT" : "POST";
   const redirectTo = action;
 
   const filter = filters[0]; // This is super jank and needs to be changed
-
-  const [name, setName] = useState(feed.name);
-  const [url, setUrl] = useState(filter.url);
-  const pronoun = filter.pronoun;
 
   const conds = filter.conditions.map((cond, i): [number, FilterCondition] => [i, cond]);
   const [conditions, setConditions] = useState(conds);
@@ -53,41 +53,28 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
     <>
       <Header>{title}</Header>
       <Form action={action} method={method} redirectTo={redirectTo}>
+        <HiddenInput field="feed[user_id]" value={railsContext.current_user!.id} />
         <div className="grid gap-6 mt-6 mb-2 md:grid-cols-2">
-          {feed.id && <input type="hidden" name="feed[id]" value={feed.id}/>}
-          {feed.feed_code && <input type="hidden" name="feed[feed_code]" value={feed.feed_code}/>}
-          {filter.id && <input type="hidden" name="feed_filter[id]" value={filter.id}/>}
+          {feed.id && <HiddenInput field="feed[id]" value={feed.id!} />}
+          {feed.feed_code && <HiddenInput field="feed[feed_code]" value={feed.feed_code} />}
+          {filter.id && <HiddenInput field="feed_filter[id]" value={filter.id} />}
 
-          <label className="block text-md font-medium text-slate-100">
-            Name
-            <input type="text" name="feed[name]" placeholder="My Feed"
-              className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-800 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
-              value={name} onChange={e => setName(e.target.value)}
-            />
-            <FormError field="feed[name]" label="Name"/>
-          </label>
-
-          <label className="block text-md font-medium text-slate-100">
-            Source URL
-            <input type="text" name="feed_filter[url]" placeholder="https://example.com/feed.xml"
-              className="text-sm rounded-lg mt-2 block w-full p-2.5 border bg-slate-800 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
-              value={url} onChange={e => setUrl(e.target.value)}
-            />
-            <FormError field="feed_filter[url]" label="URL"/>
-          </label>
+          <Input field="feed[name]" type="text" label="Name" initialValue={feed.name} placeholder="My Feed" />
+          <Input field="feed_filter[url]" type="url" label="Source URL" initialValue={filter.url} placeholder="https://example.com/feed.xml" />
         </div>
 
-        <FeedContext.Provider value={{
-          setConditions,
-          nextConditionId,
-          setNextConditionId,
-          setSubstitutions,
-          nextSubstitutionId,
-          setNextSubstitutionId,
-        } as FeedContextParams}
+        <FeedContext.Provider
+          value={{
+            setConditions,
+            nextConditionId,
+            setNextConditionId,
+            setSubstitutions,
+            nextSubstitutionId,
+            setNextSubstitutionId,
+          } as FeedContextParams}
         >
           <FeedFiltersForm
-            pronoun={pronoun}
+            pronoun={filter.pronoun}
             conditions={conditions}
             substitutions={substitutions}
           />

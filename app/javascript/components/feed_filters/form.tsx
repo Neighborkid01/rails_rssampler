@@ -3,6 +3,7 @@ import { FilterCondition, FilterPronoun, filterPronounLabel, FilterSubstitution 
 import Dropdown, { DropdownSize, DropdownType } from "../shared/dropdown";
 import EditFilterConditionList from "../filter_conditions/edit_list";
 import EditFilterSubstitutionList from "../filter_substitutions/edit_list";
+import HiddenInput from "../shared/form_fields/hidden_input";
 
 interface FeedFiltersFormProps {
   pronoun: FilterPronoun;
@@ -20,7 +21,7 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
 
   return (
     <>
-      <fieldset className="block text-md font-medium text-slate-100">
+      <fieldset className="block text-md font-medium text-slate-100 mt-4">
         <legend>Filter conditions:</legend>
         <div className="text-sm">
           Keep entries where
@@ -47,9 +48,9 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
         </div>
       </fieldset>
 
-      <input type="hidden" name="feed_filter[pronoun]" value={selectedPronoun}/>
-      <input type="hidden" name="feed_filter[substitutions]" value={stringifySubstitutions()}/>
-      <input type="hidden" name="feed_filter[conditions]" value={stringifyConditions()}/>
+      <HiddenInput field="feed_filter[pronoun]" value={selectedPronoun} />
+      <HiddenInput field="feed_filter[substitutions]" value={stringifySubstitutions()} />
+      <HiddenInput field="feed_filter[conditions]" value={stringifyConditions()} />
     </>
   );
 };

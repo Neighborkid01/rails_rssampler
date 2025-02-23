@@ -1,4 +1,5 @@
 import React, { createContext } from "react";
+import { User } from "../../models/user";
 
 interface RailsComponentProps {
   component: string;
@@ -20,6 +21,7 @@ export default RailsComponent;
 
 interface RailsContextParams {
   csrf_token: string;
+  current_user: User | null;
 }
 
 const RailsContext = createContext<RailsContextParams | null>(null);

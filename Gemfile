@@ -87,3 +87,7 @@ gem "rubocop-rails-omakase", require: false, group: [:development]
 gem "tailwindcss-ruby", "~> 4.0"
 
 gem "tailwindcss-rails", "~> 4.0"
+
+gem "devise", "~> 4.9"
+
+gem 'cancancan'
