@@ -3,6 +3,8 @@ import { Feed } from "../../models/feed";
 import { FeedFilter } from "../../models/feed_filter";
 import FeedFilterShow from "../feed_filters/show";
 import Form from "../shared/form";
+import Header from "../shared/header";
+import ShowField from "../shared/show_field";
 
 interface FeedProps {
   feed: Feed;
@@ -31,25 +33,21 @@ const FeedShow = ({ feed, filters }: FeedProps) => {
 
   return (
     <>
-      <h1>{`Feed: ${feed.name}`}</h1>
+      <Header>{feed.name}</Header>
+
+      <ShowField label="Add this URL to your RSS reader or podcast player:" value={feedLink} code>
+        <button
+          onClick={copyToClipboard}
+          className="absolute top-0 end-0 p-2.5 h-full text-sm font-medium rounded-e-lg border bg-slate-700 hover:bg-slate-600 border-slate-600"
+        >
+          {copyText}
+        </button>
+      </ShowField>
 
       {filters.map(filter =>
         <FeedFilterShow key={filter.id} filter={filter} />
       )}
 
-      <div>
-        <label>
-          Add this URL to your RSS reader or podcast player:
-          <span>
-            <code className="m-2">{feedLink}</code>
-            <button onClick={copyToClipboard}>
-              {copyText}
-            </button>
-          </span>
-        </label>
-      </div>
-
-      <br />
       <a href={`/feeds/${feed.feed_code}/edit`}>Edit Feed</a>
       <Form action={`/feeds/${feed.feed_code}`} method="DELETE" redirectTo="/feeds">
         <input type="submit" value="Delete Feed" onClick={() => confirm(`Are you sure you want to permenantly delete "${feed.name}?"`)}/>

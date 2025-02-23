@@ -81,7 +81,10 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
         </FeedContext.Provider>
         <button type="submit">Submit</button>
       </Form>
-      <a href="/feeds">Back to Feeds</a>
+      {feed.feed_code
+        ? <a href={`/feeds/${feed.feed_code}`}>{`Back to ${feed.name}`}</a>
+        : <a href="/feeds">Back to Feeds</a>
+      }
     </>
   );
 };

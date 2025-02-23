@@ -32,7 +32,7 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
             dropdownType={DropdownType.Rounded}
             dropdownSize={DropdownSize.Small}
             toDropdownOption={value => ({ value, label: filterPronounLabel(value) })}
-            offset="left-40"
+            optionsClassName="left-40"
           />
           of the following are true
         </div>
