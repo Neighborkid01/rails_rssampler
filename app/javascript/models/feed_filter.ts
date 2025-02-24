@@ -15,7 +15,7 @@ enum FilterType {
   StartsWith = "Starts with",
   EndsWith = "Ends with",
   Contains = "Contains",
-  Matches = "Matches",
+  Matches = "Matches Regex",
 }
 
 function filterTypeValue(value: FilterType): string {

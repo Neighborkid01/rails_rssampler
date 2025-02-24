@@ -34,8 +34,10 @@ const EditFilterCondition = ({ condition, onTypeChanged, onFieldChanged, onValue
       />
 
       <div className="relative w-full">
-        <input type="text" placeholder={`${condition.field} ${condition.filter_type.toLowerCase()}...`}
-          className="block p-2.5 w-full text-sm rounded-e-lg rounded-s-2 border bg-slate-800 border-slate-600 placeholder-gray-400 text-slate-100 focus:ring-blue-500 focus:border-blue-500"
+        <input
+          type="text"
+          placeholder={`${condition.field} ${condition.filter_type.toLowerCase()}...`}
+          className={`block p-2.5 w-full text-sm rounded-e-lg rounded-s-2 border ${condition.filter_type === FilterType.Matches ? "font-mono" : ""} border-slate-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500`}
           value={condition.value}
           onInput={onValueChanged}
         />
