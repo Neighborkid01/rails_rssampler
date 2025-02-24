@@ -7,7 +7,7 @@ import Header from "../shared/header";
 import { useRailsContext } from "../shared/rails_component";
 import Input from "../shared/form_fields/input";
 import HiddenInput from "../shared/form_fields/hidden_input";
-import FeedPreview from "./preview";
+import FeedPreview from "../feed_filters/preview";
 
 interface FeedContextParams {
   setPronoun: React.Dispatch<React.SetStateAction<FilterPronoun>>;

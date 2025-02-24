@@ -5,7 +5,7 @@ import FeedFilterShow from "../feed_filters/show";
 import Form from "../shared/form";
 import Header from "../shared/header";
 import ShowField from "../shared/show_field";
-import FeedPreview from "./preview";
+import FeedPreview from "../feed_filters/preview";
 
 interface FeedProps {
   feed: Feed;

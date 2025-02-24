@@ -1,7 +1,6 @@
 import React from "react";
-import { FilterCondition, FilterType, filterTypeValue } from "../../models/feed_filter";
+import { FilterCondition, FilterType } from "../../models/feed_filter";
 import DropdownButton from "../shared/dropdown_button";
-import { filterableFieldValue } from "../../models/filterable_field";
 import { DropdownType } from "../shared/dropdown";
 
 interface FilterConditionProps {
@@ -11,10 +10,10 @@ interface FilterConditionProps {
 const ShowFilterCondition = ({ condition }: FilterConditionProps) => {
   return (
     <div className="flex py-1 relative">
-      <DropdownButton value={filterableFieldValue(condition.field)} />
+      <DropdownButton value={condition.field} />
 
       <DropdownButton
-        value={filterTypeValue(condition.filter_type)}
+        value={condition.filter_type}
         dropdownType={DropdownType.NotRounded}
         className="left-40"
       />

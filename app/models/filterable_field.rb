@@ -47,4 +47,31 @@ class FilterableField
 
     namespace.present? ? "#{namespace}:#{title}" : title
   end
+
+  def self.from_tag_title(title)
+    fields = {
+       "author" => AUTHOR,
+       "description" => DESCRIPTION,
+       "duration" => DURATION,
+       "episodeType" => EPISODE_TYPE,
+       "explicit" => EXPLICIT,
+       "image" => IMAGE,
+       "keywords" => KEYWORDS,
+       "language" => LANGUAGE,
+       "lastBuildDate" => LAST_BUILD_DATE,
+       "link" => LINK,
+       "new-feed-url" => NEW_FEED_URL,
+       "pubDate" => PUBLISHED_DATE,
+       "subtitle" => SUBTITLE,
+       "summary" => SUMMARY,
+       "title" => TITLE,
+       "url" => URL,
+    }
+    field = fields[title]
+    if field.blank? && ["guid"].exclude?(title)
+      Rails.logger.error "No field exists for title '#{title}'"
+      return
+    end
+    field
+  end
 end

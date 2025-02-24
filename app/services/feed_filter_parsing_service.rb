@@ -59,7 +59,6 @@ class FeedFilterParsingService
       (@filter.pronoun == "any_" && satisfied_conditions.present?) ||
       (@filter.pronoun == "all_" && unsatisfied_conditions.empty?)
     )
-      Rails.logger.debug "- #{node.at_css("title").text || "No title found for item"}"
       return false
     end
 
@@ -97,12 +96,13 @@ class FeedFilterParsingService
     condition_values = {}
 
     node.element_children.each do |child|
-      condition_values[child.name] = child.text if field_titles.include? child.name
-      condition_values[child.name] = child.text if child.name == "title"
+      name = FilterableField.from_tag_title(child.name)
+      condition_values[name] = child.text if field_titles.include? child.name
+      condition_values[name] = child.text if child.name == "title"
       break if condition_values.keys.count == field_titles.count
     end
 
-    title = condition_values.delete("title")
+    title = condition_values.delete(FilterableField::TITLE)
     condition_values = { "title" => title, "additional_fields" => condition_values }
 
     condition_values
