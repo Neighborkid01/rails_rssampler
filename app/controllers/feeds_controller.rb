@@ -1,5 +1,5 @@
 class FeedsController < ApplicationController
-  load_and_authorize_resource find_by: :feed_code, id_param: :feed_code
+  load_and_authorize_resource find_by: :feed_code, id_param: :feed_code, except: [:preview]
 
   def index
   end
@@ -9,10 +9,23 @@ class FeedsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {
-        parser_service = FeedFilterParsingService.new(@feed)
+        parser_service = FeedFilterParsingService.new(@filters)
         render xml: parser_service.parse
       }
     end
+  end
+
+  def preview
+    conditions = JSON.parse(feed_filter_params[:conditions])
+    substitutions = JSON.parse(feed_filter_params[:substitutions])
+    filter = FeedFilter.new(feed_filter_params.merge(feed_id: nil, conditions: conditions, substitutions: substitutions))
+    parser_service = FeedFilterParsingService.new([filter])
+    parser_service.parse(generate_preview: true)
+    render json: {
+      title: parser_service.title,
+      removed_items: parser_service.removed_items,
+      retained_items: parser_service.retained_items,
+    }
   end
 
   def new

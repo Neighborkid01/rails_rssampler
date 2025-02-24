@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FeedForCreation } from "../../models/feed";
-import { FeedFilterForCreation, FilterCondition, FilterSubstitution } from "../../models/feed_filter";
+import { FeedFilterForCreation, FeedFilterForPreview, FilterCondition, FilterPronoun, FilterSubstitution } from "../../models/feed_filter";
 import FeedFiltersForm from "../feed_filters/form";
 import Form from "../shared/form";
 import Header from "../shared/header";
 import { useRailsContext } from "../shared/rails_component";
 import Input from "../shared/form_fields/input";
 import HiddenInput from "../shared/form_fields/hidden_input";
+import FeedPreview from "./preview";
 
 interface FeedContextParams {
+  setPronoun: React.Dispatch<React.SetStateAction<FilterPronoun>>;
   setConditions: React.Dispatch<React.SetStateAction<[number, FilterCondition][]>>;
   nextConditionId: number;
   setNextConditionId: React.Dispatch<React.SetStateAction<number>>;
@@ -41,6 +43,10 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
 
   const filter = filters[0]; // This is super jank and needs to be changed
 
+  // Keeping track of these here too bc I need to build a feed and filters for the preview
+  const [url, setUrl] = useState(filter.url);
+  const [pronoun, setPronoun] = useState(filter.pronoun);
+
   const conds = filter.conditions.map((cond, i): [number, FilterCondition] => [i, cond]);
   const [conditions, setConditions] = useState(conds);
   const [nextConditionId, setNextConditionId] = useState(conditions.length);
@@ -48,6 +54,17 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
   const subs = filter.substitutions.map((sub, i): [number, FilterSubstitution] => [i, sub]);
   const [substitutions, setSubstitutions] = useState(subs);
   const [nextSubstitutionId, setNextSubstitutionId] = useState(substitutions.length);
+
+  const [previewFilter, setPreviewFilter] = useState(null as FeedFilterForPreview | null);
+
+  useEffect(() => {
+    setPreviewFilter({
+      url,
+      pronoun,
+      conditions: JSON.stringify(conditions.map(([_, cond]) => cond)),
+      substitutions: JSON.stringify(substitutions.map(([_, sub]) => sub)),
+    } as FeedFilterForPreview);
+  }, [url, pronoun, conditions, substitutions]);
 
   return (
     <>
@@ -60,11 +77,19 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
           {filter.id && <HiddenInput field="feed_filter[id]" value={filter.id} />}
 
           <Input field="feed[name]" type="text" label="Name" initialValue={feed.name} placeholder="My Feed" />
-          <Input field="feed_filter[url]" type="url" label="Source URL" initialValue={filter.url} placeholder="https://example.com/feed.xml" />
+          <Input
+            field="feed_filter[url]"
+            type="url"
+            label="Source URL"
+            initialValue={filter.url}
+            onValueChange={(url) => setUrl(url)}
+            placeholder="https://example.com/feed.xml"
+          />
         </div>
 
         <FeedContext.Provider
           value={{
+            setPronoun,
             setConditions,
             nextConditionId,
             setNextConditionId,
@@ -79,12 +104,14 @@ const FeedForm = ({ feed, filters }: FeedFormProps) => {
             substitutions={substitutions}
           />
         </FeedContext.Provider>
-        <button type="submit">Submit</button>
+
+        {previewFilter && <FeedPreview filter={previewFilter} />}
+
+        <div className="flex justify-end mt-6">
+          <a href={`/feeds${feed.feed_code ? `/${feed.feed_code}` : ""}`} className="px-4 py-2 hover:underline">{`Back to ${feed.feed_code ? feed.name : "my feeds"}`}</a>
+          <button className="px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600">Submit</button>
+        </div>
       </Form>
-      {feed.feed_code
-        ? <a href={`/feeds/${feed.feed_code}`}>{`Back to ${feed.name}`}</a>
-        : <a href="/feeds">Back to Feeds</a>
-      }
     </>
   );
 };

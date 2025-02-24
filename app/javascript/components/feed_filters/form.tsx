@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { FilterCondition, FilterPronoun, filterPronounLabel, FilterSubstitution } from "../../models/feed_filter";
 import Dropdown, { DropdownSize, DropdownType } from "../shared/dropdown";
 import EditFilterConditionList from "../filter_conditions/edit_list";
-import EditFilterSubstitutionList from "../filter_substitutions/edit_list";
+// import EditFilterSubstitutionList from "../filter_substitutions/edit_list";
 import HiddenInput from "../shared/form_fields/hidden_input";
+import { useFeedContext } from "../feeds/form";
 
 interface FeedFiltersFormProps {
   pronoun: FilterPronoun;
@@ -12,9 +13,9 @@ interface FeedFiltersFormProps {
 }
 
 const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersFormProps) => {
+  const { setPronoun } = useFeedContext();
   const [selectedPronoun, setSelectedPronoun] = useState(pronoun);
   const pronounOptions = Object.values(FilterPronoun);
-  const onPronounChanged = (value: FilterPronoun) => setSelectedPronoun(value);
 
   const stringifySubstitutions = () => JSON.stringify(substitutions.map(([_, sub]) => sub));
   const stringifyConditions = () => JSON.stringify(conditions.map(([_, cond]) => cond));
@@ -28,7 +29,10 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
           <Dropdown<FilterPronoun>
             initialValue={pronoun}
             valueOptions={pronounOptions}
-            onValueSelected={onPronounChanged}
+            onValueSelected={(val) => {
+              setPronoun(val);
+              setSelectedPronoun(val);
+            }}
             dropdownType={DropdownType.Rounded}
             dropdownSize={DropdownSize.Small}
             toDropdownOption={value => ({ value, label: filterPronounLabel(value) })}
@@ -41,12 +45,12 @@ const FeedFiltersForm = ({ pronoun, conditions, substitutions }: FeedFiltersForm
         </div>
       </fieldset>
 
-      <fieldset className="block text-md font-medium text-slate-100">
+      {/* <fieldset className="block text-md font-medium text-slate-100">
         <legend>Substitutions:</legend>
         <div className="mb-2">
           <EditFilterSubstitutionList substitutions={substitutions}/>
         </div>
-      </fieldset>
+      </fieldset> */}
 
       <HiddenInput field="feed_filter[pronoun]" value={selectedPronoun} />
       <HiddenInput field="feed_filter[substitutions]" value={stringifySubstitutions()} />

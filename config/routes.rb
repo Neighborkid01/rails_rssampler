@@ -11,5 +11,9 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
-  resources :feeds, param: :feed_code
+  resources :feeds, param: :feed_code do
+    collection do
+      post "preview"
+    end
+  end
 end

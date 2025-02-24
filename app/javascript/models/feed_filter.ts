@@ -53,6 +53,13 @@ type FeedFilterForCreation = {
   feed_id?: number;
 };
 
+type FeedFilterForPreview = {
+  url: string;
+  pronoun: FilterPronoun;
+  conditions: string;
+  substitutions: string;
+};
+
 export {
   FilterPronoun,
   filterPronounLabel,
@@ -62,4 +69,5 @@ export {
   FilterCondition,
   FeedFilter,
   FeedFilterForCreation,
+  FeedFilterForPreview,
 };

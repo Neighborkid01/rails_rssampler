@@ -1,25 +1,41 @@
 require "open-uri"
 
 class FeedFilterParsingService
-  def initialize(feed)
-    @feed = feed
+  attr_reader :title, :removed_items, :retained_items
+
+  def initialize(filters)
+    @filters = filters
+    @title = nil
+    @removed_items = []
+    @retained_items = []
   end
 
-  def parse
-    # Only works for 1 filter for now
-    @filter = @feed.feed_filters.first
-    if @filter.blank?
-      Rails.logger.error "No filters found for feed #{@feed.feed_code}"
+  def parse(generate_preview: false)
+    if @filters.blank?
+      Rails.logger.error "No filters were passed: '#{@filters}'"
       return
     end
 
+    # Only works for 1 filter for now
+    @filter = @filters.first
+
     conditions = @filter.conditions.map { |cond| FilterCondition.from_hash(cond) }
+    field_titles = conditions.map { |cond| FilterableField.as_tag_title(cond.field) }
     doc = Nokogiri::XML(URI.open(@filter.url))
+    @title = doc.at_css("title")&.text
 
     start_time = Time.now
 
     doc.xpath("//rss/channel/item").each do |item|
-      item.remove if should_be_removed?(item, conditions)
+      removed = false
+      if should_be_removed?(item, conditions)
+        removed = true
+        item.remove
+      end
+      if generate_preview
+        values = get_filter_values(item, field_titles)
+        removed ? @removed_items << values : @retained_items << values
+      end
     end
 
     end_time = Time.now
@@ -35,7 +51,7 @@ class FeedFilterParsingService
 
     node.element_children.each do |child|
       break if @filter.pronoun == "any_" && satisfied_conditions.present?
-      satisfied_conditions += check_filter_conditions(conditions, child)
+      satisfied_conditions += check_filter_conditions(child, conditions)
     end
 
     unsatisfied_conditions = conditions.filter { |cond| satisfied_conditions.exclude? cond }
@@ -50,8 +66,14 @@ class FeedFilterParsingService
     true
   end
 
-  def check_filter_conditions(conditions, node)
+  def check_filter_conditions(node, conditions)
     satisfied_conditions = []
+
+    # This would be more efficient if I just selected only the nodes I need to check and check them directly
+    # that would be O(n)
+    # this is currently O(m*n)
+    # m = # of nodes and n = # of filters
+
     conditions.each do |condition|
       break if @filter.pronoun == "any_" && !satisfied_conditions.empty?
       next if node.name != FilterableField.as_tag_title(condition.field)
@@ -69,5 +91,20 @@ class FeedFilterParsingService
       satisfied_conditions << condition
     end
     satisfied_conditions
+  end
+
+  def get_filter_values(node, field_titles)
+    condition_values = {}
+
+    node.element_children.each do |child|
+      condition_values[child.name] = child.text if field_titles.include? child.name
+      condition_values[child.name] = child.text if child.name == "title"
+      break if condition_values.keys.count == field_titles.count
+    end
+
+    title = condition_values.delete("title")
+    condition_values = { "title" => title, "additional_fields" => condition_values }
+
+    condition_values
   end
 end

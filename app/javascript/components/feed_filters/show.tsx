@@ -1,17 +1,17 @@
 import React from "react";
-import { FeedFilter, FilterCondition, filterPronounLabel, FilterSubstitution } from "../../models/feed_filter";
+import { FeedFilter, FilterCondition, filterPronounLabel /* , FilterSubstitution */ } from "../../models/feed_filter";
 import ShowField from "../shared/show_field";
 import ShowFilterConditionList from "../filter_conditions/show_list";
 import DropdownButton from "../shared/dropdown_button";
 import { DropdownSize, DropdownType } from "../shared/dropdown";
-import ShowFilterSubstitutionList from "../filter_substitutions/show_list";
+// import ShowFilterSubstitutionList from "../filter_substitutions/show_list";
 
 interface FeedFilterProps {
   filter: FeedFilter;
 };
 
 const FeedFilterShow = ({ filter }: FeedFilterProps) => {
-  const substitutions = filter.substitutions.map((sub, i): [number, FilterSubstitution] => [i, sub]);
+  // const substitutions = filter.substitutions.map((sub, i): [number, FilterSubstitution] => [i, sub]);
   const conditions = filter.conditions.map((cond, i): [number, FilterCondition] => [i, cond]);
 
   return <>
@@ -34,14 +34,14 @@ const FeedFilterShow = ({ filter }: FeedFilterProps) => {
       </div>
     </fieldset>
 
-    {substitutions && substitutions.length > 0 &&
+    {/* {substitutions && substitutions.length > 0 &&
       <fieldset className="block text-md font-medium text-slate-100">
         <legend>Substitutions:</legend>
         <div className="mb-2">
           <ShowFilterSubstitutionList substitutions={substitutions}/>
         </div>
       </fieldset>
-    }
+    } */}
   </>;
 };
 

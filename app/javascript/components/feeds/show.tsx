@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Feed } from "../../models/feed";
-import { FeedFilter } from "../../models/feed_filter";
+import { FeedFilter, FeedFilterForPreview } from "../../models/feed_filter";
 import FeedFilterShow from "../feed_filters/show";
 import Form from "../shared/form";
 import Header from "../shared/header";
 import ShowField from "../shared/show_field";
+import FeedPreview from "./preview";
 
 interface FeedProps {
   feed: Feed;
@@ -43,17 +44,29 @@ const FeedShow = ({ feed, filters }: FeedProps) => {
           {copyText}
         </button>
       </ShowField>
-
-      {filters.map(filter =>
-        <FeedFilterShow key={filter.id} filter={filter} />
-      )}
-
-      <a href={`/feeds/${feed.feed_code}/edit`}>Edit Feed</a>
-      <Form action={`/feeds/${feed.feed_code}`} method="DELETE" redirectTo="/feeds">
-        <input type="submit" value="Delete Feed" onClick={() => confirm(`Are you sure you want to permenantly delete "${feed.name}?"`)}/>
-      </Form>
-
-      <a href="/feeds">Back to Feeds</a>
+      {filters.map(filter => {
+        const previewFilter = {
+          url: filter.url,
+          pronoun: filter.pronoun,
+          conditions: JSON.stringify(filter.conditions),
+          substitutions: JSON.stringify(filter.substitutions),
+        } as FeedFilterForPreview;
+        return <React.Fragment key={filter.id}>
+          <FeedFilterShow filter={filter} />
+          <FeedPreview filter={previewFilter} />
+        </React.Fragment>;
+      })}
+      <div className="flex justify-end mt-6">
+        <a href={`/feeds/${feed.feed_code}/edit`} className="px-4 py-2 hover:underline">Edit Feed</a>
+        <Form action={`/feeds/${feed.feed_code}`} method="DELETE" redirectTo="/feeds">
+          <input
+            type="submit"
+            value="Delete Feed"
+            className="px-4 py-2 bg-primary rounded-lg hover:bg-slate-600"
+            onClick={() => confirm(`Are you sure you want to permenantly delete "${feed.name}?"`)}
+          />
+        </Form>
+      </div>
     </>
   );
 };
