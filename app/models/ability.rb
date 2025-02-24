@@ -38,7 +38,7 @@ class Ability
   end
 
   def logged_out(request)
-    can :read, Feed if request&.format&.xml?
+    can :read, Feed if request&.params[:controller] == "feeds" && request&.params[:action] == "show" && request&.format&.xml?
   end
 
   def logged_in(user)

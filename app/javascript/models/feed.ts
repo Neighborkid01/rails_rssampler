@@ -4,6 +4,7 @@ type Feed = {
   id: number;
   name: string;
   feed_code: string;
+  user_id: number;
   // feed_filters: FeedFilter[];
 };
 
