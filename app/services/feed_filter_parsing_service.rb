@@ -108,16 +108,17 @@ class FeedFilterParsingService
   def get_filter_values(node, field_titles)
     condition_values = {}
 
+    title_node = node.at_xpath(".//title")
+    title = title_node&.text
+
     node.element_children.each do |child|
+      next if child.name == "title"
       name = FilterableField.from_tag_title(child.name)
       condition_values[name] = child.text if field_titles.include? child.name
-      condition_values[name] = child.text if child.name == "title"
       break if condition_values.keys.count == field_titles.count
     end
 
-    title = condition_values.delete(FilterableField::TITLE)
-    condition_values = { "title" => title, "additional_fields" => condition_values }
-
-    condition_values
+    # Always include title in the result
+    { "title" => title, "additional_fields" => condition_values }
   end
 end
