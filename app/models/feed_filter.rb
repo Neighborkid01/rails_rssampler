@@ -34,7 +34,7 @@ class FeedFilter < ApplicationRecord
     end
     blank_errors = []
     conditions.each do |condition|
-      blank_errors << "#{condition["field"]} #{condition["filter_type"].downcase} must have a value" if condition["value"].blank?
+      blank_errors << "'#{condition["field"]} #{condition["filter_type"].downcase}' must have a value" if condition["value"].blank?
     end
     blank_errors.to_set.each do |error|
       errors.add(:conditions, error)
@@ -51,7 +51,7 @@ class FeedFilter < ApplicationRecord
     end
     blank_errors = []
     substitutions.each do |substitution|
-      blank_errors << "#{substitution["field"]} must have a value" if substitution["value"].blank?
+      blank_errors << "'#{substitution["field"]}' must have a value" if substitution["value"].blank?
     end
     blank_errors.to_set.each do |error|
       errors.add(:substitutions, error)

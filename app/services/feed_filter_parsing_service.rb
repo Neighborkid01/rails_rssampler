@@ -1,5 +1,7 @@
 require "open-uri"
 
+class InvalidRssUrlError < StandardError; end
+
 class FeedFilterParsingService
   attr_reader :title, :removed_items, :retained_items
 
@@ -18,6 +20,16 @@ class FeedFilterParsingService
 
     # Only works for 1 filter for now
     @filter = @filters.first
+
+    validator = RssUrlValidator.new(@filter.url)
+    begin
+      unless validator.valid?
+        Rails.logger.error "Invalid RSS URL: #{@filter.url}"
+        raise InvalidRssUrlError, "The provided URL is invalid"
+      end
+    rescue RedirectError => e
+      raise InvalidRssUrlError, e.message
+    end
 
     conditions = @filter.conditions.map { |cond| FilterCondition.from_hash(cond) }
     field_titles = conditions.map { |cond| FilterableField.as_tag_title(cond.field) }
