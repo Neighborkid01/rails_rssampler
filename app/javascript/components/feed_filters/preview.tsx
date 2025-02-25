@@ -26,6 +26,7 @@ const FeedPreview = ({ filter, className }: FeedPreviewProps) => {
   const [loading, setLoading] = useState(true);
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useMemo(async () => {
     try {
@@ -47,6 +48,7 @@ const FeedPreview = ({ filter, className }: FeedPreviewProps) => {
         console.warn(`Error getting preview via ajax: ${response.status} - ${response.statusText}`, result);
         setPreviewData(null);
         setLoading(false);
+        setError(result.error);
         return;
       }
 
@@ -58,6 +60,7 @@ const FeedPreview = ({ filter, className }: FeedPreviewProps) => {
       }
 
       setPreviewData(result);
+      setError(null);
     } catch (error) {
       setLoading(false);
       setPreviewData(null);
@@ -69,8 +72,8 @@ const FeedPreview = ({ filter, className }: FeedPreviewProps) => {
     <div className={`border rounded-xl p-4 mt-4 mb-2 ${className}`}>
       {loading
         ? <Header>Loading...</Header>
-        : (!previewData
-          ? <Header>Error generating preview</Header>
+        : (!previewData || error
+          ? <Header>{`Error generating preview${error ? `: ${error}` : ""}`}</Header>
           : <>
             <Header>{`Preview: ${previewData.title}`}</Header>
             <div className="flex flex-col md:flex-row space-between">
@@ -80,7 +83,7 @@ const FeedPreview = ({ filter, className }: FeedPreviewProps) => {
               </div>
               <div className="w-full mt-4 md:mt-0">
                 Removed:
-                <PreviewItemList items={previewData.removed_items} className="text-primary" showAll={showAll} />
+                <PreviewItemList items={previewData.removed_items} className="text-red-500" showAll={showAll} />
               </div>
             </div>
             {(previewData.retained_items.length > 10 || previewData.removed_items.length > 10) && (
