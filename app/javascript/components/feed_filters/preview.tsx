@@ -30,6 +30,13 @@ const FeedPreview = ({ filter, className }: FeedPreviewProps) => {
 
   useMemo(async () => {
     try {
+      if (!filter.url) {
+        setPreviewData(null);
+        setLoading(false);
+        setError("No URL provided");
+        return;
+      }
+
       const jsonBody = { feed_filter: filter };
       setLoading(true);
 

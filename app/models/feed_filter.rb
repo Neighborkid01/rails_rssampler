@@ -21,7 +21,7 @@ class FeedFilter < ApplicationRecord
     self.url ||= ""
     self.pronoun ||= FeedFilter.pronouns.keys.first
     self.conditions ||= [FilterCondition.default_hash]
-    self.substitutions ||= [FilterSubstitution.default_hash]
+    self.substitutions ||= [] # [FilterSubstitution.default_hash]
   end
 
   def conditions_presence
