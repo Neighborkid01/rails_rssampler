@@ -3,6 +3,7 @@ import { FilterableField } from "./filterable_field";
 enum FilterPronoun {
   Any = "any_",
   All = "all_",
+  None = "none_",
 }
 
 function filterPronounLabel(value: FilterPronoun): string {

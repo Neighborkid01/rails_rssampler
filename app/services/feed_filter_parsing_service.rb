@@ -69,7 +69,8 @@ class FeedFilterParsingService
     unsatisfied_conditions = conditions.filter { |cond| satisfied_conditions.exclude? cond }
     if (
       (@filter.pronoun == "any_" && satisfied_conditions.present?) ||
-      (@filter.pronoun == "all_" && unsatisfied_conditions.empty?)
+      (@filter.pronoun == "all_" && unsatisfied_conditions.empty?) ||
+      (@filter.pronoun == "none_" && satisfied_conditions.empty?)
     )
       return false
     end
